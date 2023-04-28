@@ -8,14 +8,14 @@ export const InputFormWrap = styled("div")`
 `;
 
 export const InputBox = styled(FormControl)`
-  font-family: Lobstar;
+  font-family: Lobstar, serif;
   &.MuiFormControl-root {
     width: 100%;
     height: 100%;
   }
 
   .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-    font-family: NotoSans;
+    font-family: NotoSans, serif;
     font-size: 0.8rem;
 
     &::placeholder {

@@ -9,7 +9,7 @@ export const MessageWrap = styled("div")`
 export const Question = styled("div")`
   display: inline-block;
 
-  font-family: NotoSans;
+  font-family: NotoSans, serif;
   font-size: 0.8rem;
   text-align: center;
   color: black;
@@ -18,7 +18,7 @@ export const Question = styled("div")`
 export const Answer = styled("button")`
   display: inline-block;
 
-  font-family: NotoSans;
+  font-family: NotoSans, serif;
   font-size: 0.8rem;
   font-weight: 600;
   text-align: center;

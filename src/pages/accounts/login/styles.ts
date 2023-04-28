@@ -24,7 +24,7 @@ export const Title = styled("div")`
   margin: 32px auto 12px;
   width: 180px;
 
-  font-family: Lobstar;
+  font-family: Lobstar, serif;
   font-size: 28px;
 `;
 
