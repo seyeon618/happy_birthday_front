@@ -11,7 +11,7 @@ import {
   InputFormTop,
   InputFormWrap,
   Title,
-} from "../../../style/login/styles";
+} from "../../../style/accounts/login/styles";
 
 function Login(): React.ReactElement {
   const router = useRouter();
@@ -28,7 +28,7 @@ function Login(): React.ReactElement {
 
   const onClickResetPW = (e) => {
     e.preventDefault();
-    router.push("/accounts/signup");
+    router.push("/accounts/password/reset");
   };
 
   return (

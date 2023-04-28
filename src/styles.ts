@@ -10,9 +10,11 @@ export const Article = styled("div")`
   height: 500px;
 `;
 
-export const PictureWrap = styled("div")`
+export const PictureWrap = styled("div", {
+  shouldForwardProp: (prop) => prop !== "isMobile",
+})<{ isMobile?: boolean }>`
   margin-bottom: 12px;
-  display: flex;
+  display: ${(props) => (props.isMobile ? "none" : "flex")};
   flex-basis: 380.32px;
   justify-content: center;
   align-items: center;
