@@ -24,7 +24,7 @@ export const InputBox = styled(FormControl)`
     }
   }
 
-  .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+  .MuiInputBase-root {
     width: 100%;
     height: 100%;
     padding: 0;
