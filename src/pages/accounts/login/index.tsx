@@ -5,13 +5,14 @@ import FindPasswordMsg from "../../../components/atoms/FindPasswordMsg";
 import SignButton from "../../../components/atoms/SignButton";
 import SignInputBox from "../../../components/atoms/SignInputBox";
 import SignMessage from "../../../components/atoms/SignMessage";
+
 import {
   Input,
   InputFormBottom,
   InputFormTop,
   InputFormWrap,
   Title,
-} from "../../../pageStyles/accounts/login/styles";
+} from "./styles/styles";
 
 function Login(): React.ReactElement {
   const router = useRouter();
