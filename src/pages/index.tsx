@@ -1,9 +1,23 @@
 import React from "react";
 
-function Index(): React.ReactElement {
-    return (
-        <div>hi</div>
-    );
+import { CardWrap, WholeWrap } from "../components/common/Card/styles";
+
+import Login from "./accounts/login";
+import { Article, Picture, PictureWrap } from "./styles";
+
+function Root(): React.ReactElement {
+  return (
+    <WholeWrap>
+      <CardWrap>
+        <Article>
+          <PictureWrap>
+            <Picture />
+          </PictureWrap>
+          <Login />
+        </Article>
+      </CardWrap>
+    </WholeWrap>
+  );
 }
 
-export default Index;
+export default Root;
