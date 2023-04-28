@@ -14,7 +14,7 @@ import {
   Title,
 } from "./styles";
 
-function Index(): React.ReactElement {
+function Login(): React.ReactElement {
   const router = useRouter();
 
   const onClickLogin = (e) => {
@@ -54,4 +54,4 @@ function Index(): React.ReactElement {
   );
 }
 
-export default Index;
+export default Login;
