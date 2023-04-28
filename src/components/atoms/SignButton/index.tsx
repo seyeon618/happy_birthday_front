@@ -1,5 +1,4 @@
 import React from "react";
-import { OutlinedInput } from "@mui/material";
 
 import { Button, ButtonWrap } from "./styles";
 
