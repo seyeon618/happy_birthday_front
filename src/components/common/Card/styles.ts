@@ -20,3 +20,13 @@ export const CardWrap = styled("div")`
   position: relative;
   justify-content: center;
 `;
+
+export const Article = styled("div")`
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding-left: 0;
+  width: 100%;
+  padding-bottom: 32px;
+  height: 500px;
+`;

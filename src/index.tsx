@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "./pages/accounts/login";
+import SignUp from "./pages/accounts/signup";
 import Index from "./pages/index";
 import reportWebVitals from "./reportWebVitals";
 
@@ -15,7 +16,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/accounts/login",
-    element: <Login />,
+    element: <Login isShowPicture={false} />,
+  },
+  {
+    path: "/accounts/signup",
+    element: <SignUp />,
   },
 ]);
 

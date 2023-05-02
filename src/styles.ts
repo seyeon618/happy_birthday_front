@@ -1,15 +1,5 @@
 import { styled } from "@mui/material/styles";
 
-export const Article = styled("div")`
-  display: flex;
-  justify-content: center;
-  margin: auto;
-  padding-left: 0;
-  width: 100%;
-  padding-bottom: 32px;
-  height: 500px;
-`;
-
 export const PictureWrap = styled("div", {
   shouldForwardProp: (prop) => prop !== "isMobile",
 })<{ isMobile?: boolean }>`
