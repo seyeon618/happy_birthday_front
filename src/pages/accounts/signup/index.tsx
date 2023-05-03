@@ -1,8 +1,11 @@
 import React from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
+import AccountButton from "../../../components/atoms/AccountButton";
 import AlertDialog from "../../../components/atoms/AlertDialog";
-import SignButton from "../../../components/atoms/SignButton";
+import PasswordInputBox from "../../../components/atoms/PasswordInputBox";
 import SignInputBox from "../../../components/atoms/SignInputBox";
 import SignMessage from "../../../components/atoms/SignMessage";
 import {
@@ -25,11 +28,39 @@ import {
 } from "../../../style/accounts/singup/styles";
 
 function SignUp(): React.ReactElement {
+  const [loginCondition, setLoginCondition] = useState(true);
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [pw, setPw] = useState("");
+
   const router = useRouter();
 
   const onClickLogin = (e) => {
     e.preventDefault();
-    router.push("/accounts/login");
+    console.log("id: " + id);
+    console.log("pw: " + pw);
+    console.log(`${process.env.REACT_APP_BASEURL}/accounts/signup`);
+
+    const data = {
+      name: name,
+      id: id,
+      pw: pw,
+    };
+    axios
+      .post(
+        `https://port-0-happy-birthday-back-e9btb72mlgxdl2cj.sel4.cloudtype.app/accounts/signup`,
+        data
+      )
+      .then((res) => {
+        console.log(res);
+        console.log("aaaa");
+      })
+      .catch((error) => {
+        console.log(error.responsee);
+      });
+    setLoginCondition(id.length >= 1 && pw.length >= 1);
+
+    // router.push("/accounts/login");
   };
 
   return (
@@ -44,9 +75,9 @@ function SignUp(): React.ReactElement {
               </GuideMessage>
               <GuideMessage>가입 후 축하글을 남겨주세요:)</GuideMessage>
               <Input>
-                <SignInputBox label="실명" />
-                <SignInputBox label="아이디" />
-                <SignInputBox label="비밀번호" />
+                <SignInputBox label="실명" text={name} setText={setName} />
+                <SignInputBox label="아이디" text={id} setText={setId} />
+                <PasswordInputBox label="비밀번호" text={pw} setText={setPw} />
               </Input>
               <MessageWrap>
                 <SubMessage>
@@ -62,7 +93,11 @@ function SignUp(): React.ReactElement {
                   </AddMessage>
                 </SubMessage>
               </MessageWrap>
-              <SignButton label="로그인" onClick={onClickLogin} />
+              <AccountButton
+                label="가입"
+                isConfirmed={loginCondition}
+                onClick={onClickLogin}
+              />
             </InputFormTop>
             <InputFormBottom>
               <SignMessage

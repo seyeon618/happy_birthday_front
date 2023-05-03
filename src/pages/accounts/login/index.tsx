@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
+import AccountButton from "../../../components/atoms/AccountButton";
 import FindPasswordMsg from "../../../components/atoms/FindPasswordMsg";
-import SignButton from "../../../components/atoms/SignButton";
+import PasswordInputBox from "../../../components/atoms/PasswordInputBox";
 import SignInputBox from "../../../components/atoms/SignInputBox";
 import SignMessage from "../../../components/atoms/SignMessage";
 import {
@@ -25,12 +27,23 @@ interface Props {
 }
 
 function Login({ isShowPicture }: Props): React.ReactElement {
+  const [loginCondition, setLoginCondition] = useState(true);
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
+
   const router = useRouter();
   const isMobileVariable = isMobile();
 
   const onClickLogin = (e) => {
     e.preventDefault();
-    router.push("/accounts/login");
+    console.log("id: " + id);
+    console.log("pw: " + pw);
+
+    // axios.post(`${process.env.REACT_APP_BASEURL}/`);
+
+    setLoginCondition(id.length >= 1 && pw.length >= 1);
+
+    // router.push("/accounts/login");
   };
 
   const onClickSignUp = (e) => {
@@ -56,10 +69,14 @@ function Login({ isShowPicture }: Props): React.ReactElement {
             <InputFormTop>
               <Title>Happy Birthday</Title>
               <Input>
-                <SignInputBox label="아이디" />
-                <SignInputBox label="비밀번호" />
+                <SignInputBox label="아이디" text={id} setText={setId} />
+                <PasswordInputBox label="비밀번호" text={pw} setText={setPw} />
               </Input>
-              <SignButton label="로그인" onClick={onClickLogin} />
+              <AccountButton
+                label="로그인"
+                isConfirmed={loginCondition}
+                onClick={onClickLogin}
+              />
               <FindPasswordMsg onClick={onClickResetPW} />
             </InputFormTop>
             <InputFormBottom>
