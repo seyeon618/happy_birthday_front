@@ -49,15 +49,11 @@ function SignUp(): React.ReactElement {
     axios
       .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/signup`, data)
       .then((res) => {
-        console.log("id: " + res.data.id);
-        console.log("pw: " + res.data.pw);
-        console.log("signup");
+        router.push(`${res.data.id}/home`);
       })
       .catch((error) => {
         console.log(error.response);
       });
-
-    // router.push("/accounts/login");
   };
 
   const onClickLogin = (e) => {

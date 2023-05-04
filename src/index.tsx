@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/accounts/login";
 import ResetPassWord from "./pages/accounts/password/reset";
 import SignUp from "./pages/accounts/signup";
+import Home from "./pages/home/index";
 import Root from "./pages/index";
 import reportWebVitals from "./reportWebVitals";
 
@@ -28,8 +29,8 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/home",
-    element: <></>,
+    path: "/:id/home",
+    element: <Home />,
   },
 ]);
 
