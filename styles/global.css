@@ -8,6 +8,11 @@
   src: url("../public/fonts/NotoSansKR-Regular.otf");
 }
 
+@font-face {
+  font-family: "NotoSans-light";
+  src: url("../public/fonts/NotoSansKR-Light.otf");
+}
+
 body {
   margin: 0;
 }

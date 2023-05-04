@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "./pages/accounts/login";
+import ResetPassWord from "./pages/accounts/password/reset";
 import SignUp from "./pages/accounts/signup";
 import Index from "./pages/index";
 import reportWebVitals from "./reportWebVitals";
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/accounts/login",
     element: <Login isShowPicture={false} />,
+  },
+  {
+    path: "/accounts/password/reset",
+    element: <ResetPassWord />,
   },
   {
     path: "/accounts/signup",

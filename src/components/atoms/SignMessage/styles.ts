@@ -1,9 +1,12 @@
 import { styled } from "@mui/material/styles";
 
 export const MessageWrap = styled("div")`
-  text-align: center;
+  display: flex;
   position: relative;
-  top: 35%;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 `;
 
 export const Question = styled("div")`
