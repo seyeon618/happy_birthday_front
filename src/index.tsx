@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/accounts/login";
 import ResetPassWord from "./pages/accounts/password/reset";
 import SignUp from "./pages/accounts/signup";
-import Index from "./pages/index";
+import Root from "./pages/index";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
@@ -13,7 +13,7 @@ import "./index.css";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Index />,
+    element: <Root />,
   },
   {
     path: "/accounts/login",
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/accounts/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/home",
+    element: <></>,
   },
 ]);
 

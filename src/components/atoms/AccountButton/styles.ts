@@ -25,8 +25,5 @@ export const Button = styled("button")<{ isConfirmed?: boolean }>`
   height: 32px;
   cursor: ${(props) => (props.isConfirmed ? "pointer" : "unset")};
 
-  background-color: ${(props) => (props.isConfirmed ? "#0095f6" : "#4cb5f9")};
-  &:hover {
-    background-color: #1877f2;
-  }
+  background-color: ${(props) => (props.isConfirmed ? "#1877f2" : "#4cb5f9")};
 `;

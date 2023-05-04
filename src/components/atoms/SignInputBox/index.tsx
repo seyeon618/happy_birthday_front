@@ -6,13 +6,14 @@ import { InputBox, InputFormWrap } from "./styles";
 
 interface Props {
   label: string;
-  text: string;
   setText: Dispatch<SetStateAction<string>>;
+  setState: Dispatch<SetStateAction<boolean>>;
 }
 
-function SignInputBox({ label, text, setText }: Props): React.ReactElement {
+function SignInputBox({ label, setText, setState }: Props): React.ReactElement {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
+    setState(event.target.value.length >= 1);
   };
 
   return (

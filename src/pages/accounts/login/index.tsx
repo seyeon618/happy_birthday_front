@@ -27,9 +27,10 @@ interface Props {
 }
 
 function Login({ isShowPicture }: Props): React.ReactElement {
-  const [loginCondition, setLoginCondition] = useState(true);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  const [existId, setExistId] = useState(false);
+  const [existPw, setExistPw] = useState(false);
 
   const router = useRouter();
   const isMobileVariable = isMobile();
@@ -42,22 +43,16 @@ function Login({ isShowPicture }: Props): React.ReactElement {
       pw: pw,
     };
 
-    console.log(process.env.NEXT_PUBLIC_BASEURL);
     axios
       .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`, data)
       .then((res) => {
-        console.log("id: " + res.data.id);
-        console.log("pw: " + res.data.pw);
-        console.log("login success");
-        console.log(res);
+        if (res.data.id == id && res.data.pw == pw) {
+          router.push("/accounts/login");
+        }
       })
       .catch((error) => {
         console.log(error.responsee);
       });
-
-    setLoginCondition(id.length >= 1 && pw.length >= 1);
-
-    // router.push("/accounts/login");
   };
 
   const onClickSignUp = (e) => {
@@ -83,12 +78,21 @@ function Login({ isShowPicture }: Props): React.ReactElement {
             <InputFormTop>
               <Title>Happy Birthday</Title>
               <Input>
-                <SignInputBox label="아이디" text={id} setText={setId} />
-                <PasswordInputBox label="비밀번호" text={pw} setText={setPw} />
+                <SignInputBox
+                  label="아이디"
+                  setText={setId}
+                  setState={setExistId}
+                />
+                <PasswordInputBox
+                  label="비밀번호"
+                  text={pw}
+                  setText={setPw}
+                  setState={setExistPw}
+                />
               </Input>
               <AccountButton
                 label="로그인"
-                isConfirmed={loginCondition}
+                isConfirmed={existId && existPw}
                 onClick={onClickLogin}
               />
               <FindPasswordMsg onClick={onClickResetPW} />
