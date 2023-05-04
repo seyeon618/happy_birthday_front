@@ -43,15 +43,16 @@ function SignUp(): React.ReactElement {
       id: id,
       pw: pw,
     };
+    console.log(process.env.NEXT_PUBLIC_BASEURL);
     axios
-      .post(`http://localhost:8000/accounts/signup`, data)
+      .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/signup`, data)
       .then((res) => {
         console.log("id: " + res.data.id);
         console.log("pw: " + res.data.pw);
         console.log("signup");
       })
       .catch((error) => {
-        console.log(error.responsee);
+        console.log(error.response);
       });
     setLoginCondition(id.length >= 1 && pw.length >= 1);
 

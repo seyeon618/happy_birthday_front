@@ -41,9 +41,10 @@ function Login({ isShowPicture }: Props): React.ReactElement {
       id: id,
       pw: pw,
     };
-    console.log("env: " + `${process.env.REACT_APP_BASEURL}`);
+
+    console.log(process.env.NEXT_PUBLIC_BASEURL);
     axios
-      .post(`${process.env.REACT_APP_BASEURL}/accounts/login`, data)
+      .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`, data)
       .then((res) => {
         console.log("id: " + res.data.id);
         console.log("pw: " + res.data.pw);
