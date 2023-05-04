@@ -28,10 +28,12 @@ import {
 } from "../../../style/accounts/singup/styles";
 
 function SignUp(): React.ReactElement {
-  const [loginCondition, setLoginCondition] = useState(true);
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [pw, setPw] = useState("");
+  const [existName, setExistName] = useState(false);
+  const [existId, setExistId] = useState(false);
+  const [existPw, setExistPw] = useState(false);
 
   const router = useRouter();
 
@@ -43,7 +45,7 @@ function SignUp(): React.ReactElement {
       id: id,
       pw: pw,
     };
-    console.log(process.env.NEXT_PUBLIC_BASEURL);
+
     axios
       .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/signup`, data)
       .then((res) => {
@@ -54,7 +56,6 @@ function SignUp(): React.ReactElement {
       .catch((error) => {
         console.log(error.response);
       });
-    setLoginCondition(id.length >= 1 && pw.length >= 1);
 
     // router.push("/accounts/login");
   };
@@ -76,9 +77,22 @@ function SignUp(): React.ReactElement {
               </GuideMessage>
               <GuideMessage>가입 후 축하글을 남겨주세요:)</GuideMessage>
               <Input>
-                <SignInputBox label="실명" text={name} setText={setName} />
-                <SignInputBox label="아이디" text={id} setText={setId} />
-                <PasswordInputBox label="비밀번호" text={pw} setText={setPw} />
+                <SignInputBox
+                  label="실명"
+                  setText={setName}
+                  setState={setExistName}
+                />
+                <SignInputBox
+                  label="아이디"
+                  setText={setId}
+                  setState={setExistId}
+                />
+                <PasswordInputBox
+                  label="비밀번호"
+                  text={pw}
+                  setText={setPw}
+                  setState={setExistPw}
+                />
               </Input>
               <MessageWrap>
                 <SubMessage>
@@ -96,7 +110,7 @@ function SignUp(): React.ReactElement {
               </MessageWrap>
               <AccountButton
                 label="가입"
-                isConfirmed={loginCondition}
+                isConfirmed={existId && existPw && existName}
                 onClick={onClickSignUp}
               />
             </InputFormTop>
