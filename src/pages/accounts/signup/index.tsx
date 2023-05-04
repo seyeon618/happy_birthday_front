@@ -35,11 +35,8 @@ function SignUp(): React.ReactElement {
 
   const router = useRouter();
 
-  const onClickLogin = (e) => {
+  const onClickSignUp = (e) => {
     e.preventDefault();
-    console.log("id: " + id);
-    console.log("pw: " + pw);
-    console.log(`${process.env.REACT_APP_BASEURL}/accounts/signup`);
 
     const data = {
       name: name,
@@ -47,13 +44,11 @@ function SignUp(): React.ReactElement {
       pw: pw,
     };
     axios
-      .post(
-        `https://port-0-happy-birthday-back-e9btb72mlgxdl2cj.sel4.cloudtype.app/accounts/signup`,
-        data
-      )
+      .post(`http://localhost:8000/accounts/signup`, data)
       .then((res) => {
-        console.log(res);
-        console.log("aaaa");
+        console.log("id: " + res.data.id);
+        console.log("pw: " + res.data.pw);
+        console.log("signup");
       })
       .catch((error) => {
         console.log(error.responsee);
@@ -61,6 +56,11 @@ function SignUp(): React.ReactElement {
     setLoginCondition(id.length >= 1 && pw.length >= 1);
 
     // router.push("/accounts/login");
+  };
+
+  const onClickLogin = (e) => {
+    e.preventDefault();
+    router.push("/accounts/login");
   };
 
   return (
@@ -96,7 +96,7 @@ function SignUp(): React.ReactElement {
               <AccountButton
                 label="가입"
                 isConfirmed={loginCondition}
-                onClick={onClickLogin}
+                onClick={onClickSignUp}
               />
             </InputFormTop>
             <InputFormBottom>

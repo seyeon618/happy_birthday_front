@@ -24,5 +24,4 @@ yarn-error.log*
 
 .next/
 
-# env
-.env
+.vercel

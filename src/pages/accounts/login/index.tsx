@@ -36,10 +36,23 @@ function Login({ isShowPicture }: Props): React.ReactElement {
 
   const onClickLogin = (e) => {
     e.preventDefault();
-    console.log("id: " + id);
-    console.log("pw: " + pw);
 
-    // axios.post(`${process.env.REACT_APP_BASEURL}/`);
+    const data = {
+      id: id,
+      pw: pw,
+    };
+    console.log("env: " + `${process.env.REACT_APP_BASEURL}`);
+    axios
+      .post(`${process.env.REACT_APP_BASEURL}/accounts/login`, data)
+      .then((res) => {
+        console.log("id: " + res.data.id);
+        console.log("pw: " + res.data.pw);
+        console.log("login success");
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error.responsee);
+      });
 
     setLoginCondition(id.length >= 1 && pw.length >= 1);
 

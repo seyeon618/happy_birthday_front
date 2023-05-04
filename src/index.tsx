@@ -1,4 +1,5 @@
 import React from "react";
+import dotenv from "dotenv";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -8,6 +9,8 @@ import Index from "./pages/index";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
+
+dotenv.config();
 
 const router = createBrowserRouter([
   {
