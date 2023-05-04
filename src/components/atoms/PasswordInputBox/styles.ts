@@ -14,7 +14,7 @@ export const InputBox = styled(FormControl)`
     height: 100%;
   }
 
-  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  .MuiInputBase-input {
     font-family: NotoSans, serif;
     font-size: 0.8rem;
 
@@ -24,7 +24,7 @@ export const InputBox = styled(FormControl)`
     }
   }
 
-  .css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root {
+  .MuiButtonBase-root {
     font-family: NotoSans, serif;
     font-size: 0.8rem;
     margin-right: 0px;
