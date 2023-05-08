@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import qs from "qs";
+import { useCookies } from "react-cookie";
 
 import AccountButton from "../../../components/atoms/AccountButton";
 import FindPasswordMsg from "../../../components/atoms/FindPasswordMsg";
@@ -31,6 +33,7 @@ function Login({ isShowPicture }: Props): React.ReactElement {
   const [pw, setPw] = useState("");
   const [existId, setExistId] = useState(false);
   const [existPw, setExistPw] = useState(false);
+  const [cookies, setCookie] = useCookies(["id"]);
 
   const router = useRouter();
   const isMobileVariable = isMobile();
@@ -38,17 +41,34 @@ function Login({ isShowPicture }: Props): React.ReactElement {
   const onClickLogin = (e) => {
     e.preventDefault();
 
+    // const data = {
+    //   username: id,
+    //   password: pw,
+    // };
+    // console.log(data);
+
     const data = {
-      id: id,
-      pw: pw,
+      username: id,
+      password: pw,
+    };
+
+    console.log(data);
+    const config = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     };
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`, data)
+      .post(
+        `${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`,
+        qs.stringify(data),
+        config
+      )
       .then((res) => {
-        if (res.data.id == id && res.data.pw == pw) {
-          router.push("/accounts/login");
-        }
+        console.log("success login: " + res.data.access_token);
+        setCookie("id", res.data.access_token);
+        router.push("/home");
       })
       .catch((error) => {
         console.log(error.responsee);
