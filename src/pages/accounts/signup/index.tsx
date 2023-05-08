@@ -49,7 +49,7 @@ function SignUp(): React.ReactElement {
     axios
       .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/signup`, data)
       .then((res) => {
-        router.push(`${res.data.id}/home`);
+        router.push(`/home`);
       })
       .catch((error) => {
         console.log(error.response);
