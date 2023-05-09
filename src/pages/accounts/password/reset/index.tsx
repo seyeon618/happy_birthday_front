@@ -7,6 +7,7 @@ import {
   CardWrap,
   WholeWrap,
 } from "../../../../components/common/Card/styles";
+import Footer from "../../../../components/common/Footer";
 import {
   Account,
   BackLoginMessage,
@@ -38,42 +39,45 @@ function ResetPassWord(): React.ReactElement {
   };
 
   return (
-    <WholeWrap>
-      <CardWrap>
-        <Article>
-          <FormWrap>
-            <FormTop>
-              <LockIcon />
-              <Question>{"로그인에 문제가 있나요?"}</Question>
-              <GuideMessage>
-                {
-                  "현재 본인인증을 진행하지 않고 있기 때문에, 잃어버린 비밀 번호는 복구가 어렵습니다."
-                }
-              </GuideMessage>
-              <GuideMessage>
-                {"아래 인스타 계정으로 문의 주시면 직접 찾아드리겠습니다."}
-                <PlayingImage src={Praying} alt="Playing" />
-              </GuideMessage>
-              <Account>{"DM: seyeon_618"}</Account>
-              <SepWrap>
-                <Sep />
-                <SepText>{"또는"}</SepText>
-                <Sep />
-              </SepWrap>
-              <NewAccount>{"새 계정 만들기"}</NewAccount>
-            </FormTop>
+    <div>
+      <WholeWrap>
+        <CardWrap>
+          <Article>
+            <FormWrap>
+              <FormTop>
+                <LockIcon />
+                <Question>{"로그인에 문제가 있나요?"}</Question>
+                <GuideMessage>
+                  {
+                    "현재 본인인증을 진행하지 않고 있기 때문에, 잃어버린 비밀 번호는 복구가 어렵습니다."
+                  }
+                </GuideMessage>
+                <GuideMessage>
+                  {"아래 인스타 계정으로 문의 주시면 직접 찾아드리겠습니다."}
+                  <PlayingImage src={Praying} alt="Playing" />
+                </GuideMessage>
+                <Account>{"DM: seyeon_618"}</Account>
+                <SepWrap>
+                  <Sep />
+                  <SepText>{"또는"}</SepText>
+                  <Sep />
+                </SepWrap>
+                <NewAccount>{"새 계정 만들기"}</NewAccount>
+              </FormTop>
 
-            <FormBottom>
-              <MessageWrap>
-                <BackLoginMessage onClick={onClickSignUp}>
-                  {"로그인으로 돌아가기"}
-                </BackLoginMessage>
-              </MessageWrap>
-            </FormBottom>
-          </FormWrap>
-        </Article>
-      </CardWrap>
-    </WholeWrap>
+              <FormBottom>
+                <MessageWrap>
+                  <BackLoginMessage onClick={onClickSignUp}>
+                    {"로그인으로 돌아가기"}
+                  </BackLoginMessage>
+                </MessageWrap>
+              </FormBottom>
+            </FormWrap>
+          </Article>
+        </CardWrap>
+      </WholeWrap>
+      <Footer />
+    </div>
   );
 }
 
