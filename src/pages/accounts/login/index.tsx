@@ -14,6 +14,7 @@ import {
   CardWrap,
   WholeWrap,
 } from "../../../components/common/Card/styles";
+import Footer from "../../../components/common/Footer";
 import {
   Input,
   InputFormBottom,
@@ -41,18 +42,11 @@ function Login({ isShowPicture }: Props): React.ReactElement {
   const onClickLogin = (e) => {
     e.preventDefault();
 
-    // const data = {
-    //   username: id,
-    //   password: pw,
-    // };
-    // console.log(data);
-
     const data = {
       username: id,
       password: pw,
     };
 
-    console.log(data);
     const config = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -66,7 +60,6 @@ function Login({ isShowPicture }: Props): React.ReactElement {
         config
       )
       .then((res) => {
-        console.log("success login: " + res.data.access_token);
         setCookie("id", res.data.access_token);
         router.push("/home");
       })
@@ -86,48 +79,51 @@ function Login({ isShowPicture }: Props): React.ReactElement {
   };
 
   return (
-    <WholeWrap>
-      <CardWrap>
-        <Article>
-          {isShowPicture && (
-            <PictureWrap isMobile={isMobileVariable}>
-              <Picture />
-            </PictureWrap>
-          )}
-          <InputFormWrap>
-            <InputFormTop>
-              <Title>Happy Birthday</Title>
-              <Input>
-                <SignInputBox
-                  label="아이디"
-                  setText={setId}
-                  setState={setExistId}
+    <div>
+      <WholeWrap>
+        <CardWrap>
+          <Article>
+            {isShowPicture && (
+              <PictureWrap isMobile={isMobileVariable}>
+                <Picture />
+              </PictureWrap>
+            )}
+            <InputFormWrap>
+              <InputFormTop>
+                <Title>Happy Birthday</Title>
+                <Input>
+                  <SignInputBox
+                    label="아이디"
+                    setText={setId}
+                    setState={setExistId}
+                  />
+                  <PasswordInputBox
+                    label="비밀번호"
+                    text={pw}
+                    setText={setPw}
+                    setState={setExistPw}
+                  />
+                </Input>
+                <AccountButton
+                  label="로그인"
+                  isConfirmed={existId && existPw}
+                  onClick={onClickLogin}
                 />
-                <PasswordInputBox
-                  label="비밀번호"
-                  text={pw}
-                  setText={setPw}
-                  setState={setExistPw}
+                <FindPasswordMsg onClick={onClickResetPW} />
+              </InputFormTop>
+              <InputFormBottom>
+                <SignMessage
+                  question="계정이 없으신가요?"
+                  answer="가입하기"
+                  onClick={onClickSignUp}
                 />
-              </Input>
-              <AccountButton
-                label="로그인"
-                isConfirmed={existId && existPw}
-                onClick={onClickLogin}
-              />
-              <FindPasswordMsg onClick={onClickResetPW} />
-            </InputFormTop>
-            <InputFormBottom>
-              <SignMessage
-                question="계정이 없으신가요?"
-                answer="가입하기"
-                onClick={onClickSignUp}
-              />
-            </InputFormBottom>
-          </InputFormWrap>
-        </Article>
-      </CardWrap>
-    </WholeWrap>
+              </InputFormBottom>
+            </InputFormWrap>
+          </Article>
+        </CardWrap>
+      </WholeWrap>
+      <Footer />
+    </div>
   );
 }
 

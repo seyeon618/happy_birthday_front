@@ -10,7 +10,6 @@ function Home(): React.ReactElement {
 
   const authCheck = () => {
     const token = cookies.id;
-    console.log("token: " + token);
     axios
       .get(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/token`, {
         params: {

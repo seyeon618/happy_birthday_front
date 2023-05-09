@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 
 export const WholeWrap = styled("div")`
-  min-height: 100vh;
+  min-height: calc(100vh - 35px);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -27,6 +27,5 @@ export const Article = styled("div")`
   margin: auto;
   padding-left: 0;
   width: 100%;
-  padding-bottom: 32px;
   height: 500px;
 `;
