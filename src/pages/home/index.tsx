@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Grid } from "@mui/material";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+
+import { StyledAvatar } from "../../style/home/styles";
 
 function Home(): React.ReactElement {
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
@@ -35,8 +38,12 @@ function Home(): React.ReactElement {
 
   return (
     <div>
-      {id && <h1>{id}</h1>}
-      <button onClick={logOut}>로그아웃</button>
+      <Grid container>
+        <Grid xs={4}>
+          <StyledAvatar src="/Image/youngseo.png" alt="Profile" />
+        </Grid>
+        <Grid xs={8}>{"test"}</Grid>
+      </Grid>
     </div>
   );
 }

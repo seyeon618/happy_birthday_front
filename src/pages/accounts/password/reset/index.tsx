@@ -62,12 +62,14 @@ function ResetPassWord(): React.ReactElement {
                   <SepText>{"또는"}</SepText>
                   <Sep />
                 </SepWrap>
-                <NewAccount>{"새 계정 만들기"}</NewAccount>
+                <NewAccount onClick={onClickSignUp}>
+                  {"새 계정 만들기"}
+                </NewAccount>
               </FormTop>
 
               <FormBottom>
                 <MessageWrap>
-                  <BackLoginMessage onClick={onClickSignUp}>
+                  <BackLoginMessage onClick={onClickLogin}>
                     {"로그인으로 돌아가기"}
                   </BackLoginMessage>
                 </MessageWrap>
