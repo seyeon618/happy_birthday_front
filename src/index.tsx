@@ -8,6 +8,7 @@ import ResetPassWord from "./pages/accounts/password/reset";
 import SignUp from "./pages/accounts/signup";
 import Home from "./pages/home/index";
 import Root from "./pages/index";
+import Profile from "./pages/profile/index";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 
