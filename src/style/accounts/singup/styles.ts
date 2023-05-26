@@ -1,3 +1,5 @@
+import { Avatar } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const GuideMessage = styled("div")`
@@ -28,4 +30,32 @@ export const AddMessage = styled("div")`
   text-align: right;
   margin-left: 5px;
   right: 0;
+`;
+
+export const AvatarStyled = styled(Avatar)`
+  width: 80px;
+  height: 80px;
+`;
+
+export const AvatarWrap = styled("div")`
+  display: flex;
+  justify-content: center;
+  padding: 35px 0;
+`;
+
+export const UploadBtn = styled("div")`
+  display: flex;
+  justify-content: center;
+
+  input[type="file"] {
+    /* 파일 필드 숨기기 */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
 `;

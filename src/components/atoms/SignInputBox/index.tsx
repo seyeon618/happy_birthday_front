@@ -19,7 +19,11 @@ function SignInputBox({ label, setText, setState }: Props): React.ReactElement {
   return (
     <InputFormWrap>
       <InputBox>
-        <OutlinedInput placeholder={label} onChange={handleChange} />
+        <OutlinedInput
+          placeholder={label}
+          onChange={handleChange}
+          autoComplete={""}
+        />
       </InputBox>
     </InputFormWrap>
   );

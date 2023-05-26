@@ -91,19 +91,21 @@ function Login({ isShowPicture }: Props): React.ReactElement {
             <InputFormWrap>
               <InputFormTop>
                 <Title>Happy Birthday</Title>
-                <Input>
-                  <SignInputBox
-                    label="아이디"
-                    setText={setId}
-                    setState={setExistId}
-                  />
-                  <PasswordInputBox
-                    label="비밀번호"
-                    text={pw}
-                    setText={setPw}
-                    setState={setExistPw}
-                  />
-                </Input>
+                <form>
+                  <Input>
+                    <SignInputBox
+                      label="아이디"
+                      setText={setId}
+                      setState={setExistId}
+                    />
+                    <PasswordInputBox
+                      label="비밀번호"
+                      text={pw}
+                      setText={setPw}
+                      setState={setExistPw}
+                    />
+                  </Input>
+                </form>
                 <AccountButton
                   label="로그인"
                   isConfirmed={existId && existPw}

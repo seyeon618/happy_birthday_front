@@ -53,6 +53,7 @@ function PasswordInputBox({
           }
           placeholder={label}
           onChange={handleChange}
+          autoComplete=""
         />
       </InputBox>
     </InputFormWrap>
