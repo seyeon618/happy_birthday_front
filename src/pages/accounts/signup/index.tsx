@@ -87,7 +87,6 @@ function SignUp(): React.ReactElement {
           }
         )
         .then((res) => {
-          console.log("success");
           router.push(`/home`);
         })
         .catch((error) => {

@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/accounts/login";
 import ResetPassWord from "./pages/accounts/password/reset";
 import SignUp from "./pages/accounts/signup";
+import CreateFeed from "./pages/feed/create/index";
 import Home from "./pages/home/index";
 import Root from "./pages/index";
 import Profile from "./pages/profile/index";
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />,
+  },
+  {
+    path: "/feed/create",
+    element: <CreateFeed />,
   },
   {
     path: "/profile",
