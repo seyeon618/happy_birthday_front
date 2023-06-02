@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import FormData from "form-data";
+import qs from "qs";
+import { useCookies } from "react-cookie";
 
 import AccountButton from "../../../components/atoms/AccountButton";
 import AlertDialog from "../../../components/atoms/AlertDialog";
@@ -48,6 +50,7 @@ function SignUp(): React.ReactElement {
 
   const [previewSrc, setPreviewSrc] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [cookies, setCookie] = useCookies(["id"]);
 
   const router = useRouter();
 
@@ -87,6 +90,23 @@ function SignUp(): React.ReactElement {
           }
         )
         .then((res) => {
+          const loginData = {
+            username: id,
+            password: pw,
+          };
+
+          axios
+            .post(
+              `${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`,
+              qs.stringify(loginData)
+            )
+            .then((res) => {
+              setCookie("id", res.data.access_token);
+              router.push("/home");
+            })
+            .catch((error) => {
+              console.log(error.responsee);
+            });
           router.push(`/home`);
         })
         .catch((error) => {

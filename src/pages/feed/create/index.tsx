@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CropIcon from "@mui/icons-material/Crop";
 import axios from "axios";
 import FormData from "form-data";
-import { useCookies } from "react-cookie";
 
+import Auth from "../../../components/common/Auth";
 import {
   Container,
   CurImage,
@@ -26,7 +26,6 @@ import {
 } from "../../../style/feed/create/styles";
 
 function Create(): React.ReactElement {
-  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const [id, setId] = useState(null);
   const [postId, setPostId] = useState(null);
   const [curImgIdx, setCurImgIdx] = useState(-1);
@@ -35,31 +34,6 @@ function Create(): React.ReactElement {
   const [isFeatImage, setIsFeatImage] = useState(false);
 
   const router = useRouter();
-
-  const authCheck = () => {
-    const token = cookies.id;
-    axios
-      .get(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/token`, {
-        params: {
-          token: token,
-        },
-      })
-      .then((res) => {
-        setId(res.data.id);
-      })
-      .catch(() => {
-        logOut();
-      });
-  };
-
-  useEffect(() => {
-    authCheck();
-  });
-
-  const logOut = () => {
-    removeCookie("id");
-    router.push("/accounts/login");
-  };
 
   const prevImg = () => {
     setCurImgIdx((curImgIdx) => curImgIdx - 1);
@@ -158,6 +132,7 @@ function Create(): React.ReactElement {
 
   return (
     <Container>
+      <Auth setId={setId} />
       <Header>
         <IconButtonStyled>
           <ArrowBackIosIcon />
