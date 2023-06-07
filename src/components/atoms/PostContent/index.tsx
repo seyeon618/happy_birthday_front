@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 import {
   Content,
   ContentWrap,
   CurImage,
+  Heart,
   ImageGalleryWrap,
   ImageWrap,
+  Indicator,
+  IndicatorWrap,
+  LikeCountText,
+  NotiWrap,
   PostHeader,
   PostHeaderText,
   StyledAvatar,
 } from "./styles";
 
-function PostContent(): React.ReactElement {
+interface Props {
+  id: string;
+}
+
+function PostContent({ id }: Props): React.ReactElement {
   const [posts, setPosts] = useState([]);
-  const [curImgIdxList, setCurImgIdxList] = useState([0,0,0, ...]);
+  const [likeList, setLikeList] = useState<Record<number, boolean>>({});
+  const [curImgIdxList, setCurImgIdxList] = useState<number[]>([]);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
 
@@ -24,15 +34,20 @@ function PostContent(): React.ReactElement {
       .then((res) => {
         const promises_user = [];
         const promises_image = [];
+        const promises_like_count = [];
+        const promises_like = [];
         const postData = [];
         for (let i = 0; i < res.data.length; i++) {
           // private 이거나, admin이 작성한 게시물은 표시하지 않음
           if (!res.data[i].is_private && res.data[i].user_id != "admin") {
-            const data = {
+            const user_data = {
               id: res.data[i].user_id,
             };
             const promise_user = axios
-              .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/user`, data)
+              .post(
+                `${process.env.NEXT_PUBLIC_BASEURL}/accounts/user`,
+                user_data
+              )
               .then((user) => {
                 res.data[i].profile_path = user.data.file_path;
               })
@@ -52,15 +67,44 @@ function PostContent(): React.ReactElement {
                 res.data[i].post_list = postImageList;
               });
 
+            const like_data = {
+              post_id: res.data[i].id,
+            };
+            const promise_like_count = axios
+              .post(
+                `${process.env.NEXT_PUBLIC_BASEURL}/posts/liked/count`,
+                like_data
+              )
+              .then((like) => {
+                res.data[i].liked_count = like.data;
+              });
+
+            const promise_like = axios
+              .get(
+                `${process.env.NEXT_PUBLIC_BASEURL}/posts/liked?user_id=${id}&post_id=${res.data[i].id}`
+              )
+              .then((liked) => {
+                likeList[res.data[i].id] = liked.data.is_liked;
+              })
+              .catch((error) => console.log(error));
+
             promises_user.push(promise_user);
             promises_image.push(promise_image);
+            promises_like_count.push(promise_like_count);
+            promises_like.push(promise_like);
             postData.push(res.data[i]);
           }
         }
 
-        Promise.all([...promises_user, ...promises_image])
+        Promise.all([
+          ...promises_user,
+          ...promises_image,
+          ...promises_like_count,
+          ...promises_like,
+        ])
           .then(() => {
             setPosts(postData);
+            setCurImgIdxList(Array(postData.length).fill(0));
           })
           .catch((error) => {
             console.log(error.response);
@@ -72,23 +116,71 @@ function PostContent(): React.ReactElement {
   };
 
   useEffect(() => {
-    getPost();
-  }, []);
+    if (id) {
+      getPost();
+    }
+  }, [id]);
 
-  const prevImg = (index, imageCount) => {
+  const likePost = (user_id: string, post_id: number, liked: boolean) => {
+    const data = {
+      user_id: user_id,
+      post_id: post_id,
+      is_liked: !liked,
+    };
+
+    axios
+      .post(`${process.env.NEXT_PUBLIC_BASEURL}/posts/liked`, data)
+      .then((res) => {
+        setLikeList((prevLikeList) => {
+          return {
+            ...prevLikeList,
+            [post_id]: !liked,
+          };
+        });
+      });
+
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) => {
+        if (post.id === post_id) {
+          return {
+            ...post,
+            liked_count: !liked ? post.liked_count + 1 : post.liked_count - 1,
+          };
+        } else {
+          return post;
+        }
+      });
+    });
+  };
+
+  const changeImg = (index, imageCount, changeFunc) => {
     setCurImgIdxList((prevList) => {
       const newList = [...prevList];
-      newList[index] = Math.max(0, newList[index] - 1);
+      const newIndex = changeFunc(newList[index], imageCount);
+
+      console.log("newIndex: " + newIndex + ", imageCount: " + imageCount);
+      if (
+        (newIndex === 0 && newList[index] === 0) ||
+        (newIndex === imageCount - 1 && newList[index] === imageCount - 1)
+      ) {
+        return prevList;
+      }
+
+      newList[index] = newIndex;
       return newList;
     });
   };
 
+  const prevImg = (index, imageCount) => {
+    changeImg(index, imageCount, (curIndex, count) =>
+      Math.max(0, curIndex - 1)
+    );
+  };
+
   const nextImg = (index, imageCount) => {
-    setCurImgIdxList((prevList) => {
-      const newList = [...prevList];
-      newList[index] = Math.min(imageCount - 1, newList[index] + 1);
-      return newList;
-    });
+    changeImg(index, imageCount, (curIndex, count) =>
+      Math.min(count - 1, curIndex + 1)
+    );
   };
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -101,6 +193,11 @@ function PostContent(): React.ReactElement {
     imageCount
   ) => {
     setTouchEndX(event.changedTouches[0].clientX);
+
+    const diffX = touchStartX - touchEndX;
+    if (curImgIdxList[index] === 0 && diffX < 0) return;
+    if (curImgIdxList[index] === imageCount - 1 && diffX > 0) return;
+
     handleSwipe(index, imageCount);
   };
 
@@ -115,6 +212,63 @@ function PostContent(): React.ReactElement {
     }
   };
 
+  interface ImageIndicatorProps {
+    count: number;
+    activeIndex: number;
+  }
+
+  const ImageIndicator = React.forwardRef<HTMLDivElement, ImageIndicatorProps>(
+    ({ count, activeIndex }, forwardedRef) => {
+      const ref = useRef<HTMLDivElement>(null);
+      const [scrollPos, setScrollPos] = useState(0);
+
+      useEffect(() => {
+        if (ref.current) {
+          const newPos = Math.max(
+            0,
+            (activeIndex - 2) * 15
+          ); /* 활성 동그라미 기준으로 좌측으로 2개의 동그라미까지 표시 */
+          ref.current.scrollTo({ left: newPos, behavior: "smooth" });
+          setScrollPos(newPos);
+        }
+      }, [activeIndex]);
+
+      return (
+        <IndicatorWrap ref={ref}>
+          {Array.from({ length: count }).map((_, index) => {
+            let min = 0;
+            let max = Math.min(4, count - 1);
+
+            if (count > 5) {
+              if (activeIndex <= 2) {
+                min = 0;
+                max = 4;
+              } else if (activeIndex >= count - 3) {
+                min = count - 5;
+                max = count - 1;
+              } else {
+                min = activeIndex - 2;
+                max = activeIndex + 2;
+              }
+            }
+
+            if (index >= min && index <= max) {
+              return (
+                <Indicator
+                  key={index}
+                  className={index === activeIndex ? "active" : ""}
+                />
+              );
+            }
+
+            return null;
+          })}
+        </IndicatorWrap>
+      );
+    }
+  );
+  ImageIndicator.displayName = "ImageIndicator";
+
   return (
     <ContentWrap>
       {posts.map((postData, index) => (
@@ -127,11 +281,7 @@ function PostContent(): React.ReactElement {
             <ImageWrap
               onTouchStart={handleTouchStart}
               onTouchEnd={(e) => {
-                handleTouchEnd(
-                  e,
-                  curImgIdxList[index],
-                  postData.post_list.length
-                );
+                handleTouchEnd(e, index, postData.post_list.length);
               }}
             >
               <CurImage
@@ -140,6 +290,20 @@ function PostContent(): React.ReactElement {
               />
             </ImageWrap>
           </ImageGalleryWrap>
+
+          <NotiWrap>
+            <Heart
+              filled={likeList[postData.id]}
+              onClick={() => likePost(id, postData.id, likeList[postData.id])}
+            />
+            <ImageIndicator
+              count={postData.post_list.length}
+              activeIndex={curImgIdxList[index]}
+            />
+          </NotiWrap>
+          {postData.liked_count != 0 && (
+            <LikeCountText>좋아요 {postData.liked_count}개</LikeCountText>
+          )}
         </Content>
       ))}
     </ContentWrap>

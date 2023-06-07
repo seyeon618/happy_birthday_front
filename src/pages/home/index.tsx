@@ -75,7 +75,7 @@ function Home(): React.ReactElement {
         ))}
       </ProfileList>
       <Divider light />
-      <PostContent />
+      <PostContent id={id} />
       <Divider light />
       <FooterWrap>
         <Footer>
