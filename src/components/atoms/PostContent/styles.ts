@@ -142,8 +142,26 @@ export const Indicator = styled("div")`
   }
 `;
 
-export const LikeCountText = styled("div")`
+export const TextWrap = styled("div")`
   width: 90%;
-  font-family: NotoSans, sans-serif;
   padding-top: 10px;
+`;
+
+export const TextStyled = styled("div")`
+  display: flex;
+  flex-direction: row;
+
+  font-family: NotoSans, sans-serif;
+`;
+
+export const ContentText = styled("div")`
+  -webkit-line-clamp: 2; /* 라인의 최대 수 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const IdText = styled("div")`
+  font-weight: 600;
+  padding-right: 10px;
 `;

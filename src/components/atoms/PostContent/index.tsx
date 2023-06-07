@@ -3,18 +3,21 @@ import axios from "axios";
 
 import {
   Content,
+  ContentText,
   ContentWrap,
   CurImage,
   Heart,
+  IdText,
   ImageGalleryWrap,
   ImageWrap,
   Indicator,
   IndicatorWrap,
-  LikeCountText,
   NotiWrap,
   PostHeader,
   PostHeaderText,
   StyledAvatar,
+  TextStyled,
+  TextWrap,
 } from "./styles";
 
 interface Props {
@@ -301,9 +304,15 @@ function PostContent({ id }: Props): React.ReactElement {
               activeIndex={curImgIdxList[index]}
             />
           </NotiWrap>
-          {postData.liked_count != 0 && (
-            <LikeCountText>좋아요 {postData.liked_count}개</LikeCountText>
-          )}
+          <TextWrap>
+            {postData.liked_count != 0 && (
+              <TextStyled>좋아요 {postData.liked_count}개</TextStyled>
+            )}
+            <TextStyled>
+              <IdText>{postData.user_id}</IdText>
+              <ContentText> {postData.content}</ContentText>
+            </TextStyled>
+          </TextWrap>
         </Content>
       ))}
     </ContentWrap>
