@@ -164,6 +164,11 @@ export const TextStyled = styled("div")`
   flex-direction: column;
 
   font-family: NotoSans, sans-serif;
+
+  &.grayText {
+    color: #555555;
+    font-family: NotoSans-light, sans-serif;
+  }
 `;
 
 export const ContentText = styled("div")`

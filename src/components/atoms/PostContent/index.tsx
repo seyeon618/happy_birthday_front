@@ -6,6 +6,8 @@ import {
   differenceInMinutes,
 } from "date-fns";
 
+import CommentModal from "../CommentModal";
+
 import {
   Circle,
   ClampText,
@@ -38,14 +40,16 @@ function PostContent({ id }: Props): React.ReactElement {
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
 
+  // modal
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const getPost = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_BASEURL}/posts/list`)
       .then((res) => {
-        const promises_user = [];
-        const promises_image = [];
-        const promises_like_count = [];
-        const promises_like = [];
+        const promises = [];
         const postData = [];
         for (let i = 0; i < res.data.length; i++) {
           // private 이거나, admin이 작성한 게시물은 표시하지 않음
@@ -53,67 +57,69 @@ function PostContent({ id }: Props): React.ReactElement {
             const user_data = {
               id: res.data[i].user_id,
             };
-            const promise_user = axios
-              .post(
-                `${process.env.NEXT_PUBLIC_BASEURL}/accounts/user`,
-                user_data
-              )
-              .then((user) => {
-                res.data[i].profile_path = user.data.file_path;
-              })
-              .catch((error) => {
-                console.log(error.response);
-              });
-
-            const postImageList = [];
-            const promise_image = axios
-              .get(
-                `${process.env.NEXT_PUBLIC_BASEURL}/posts/image/list?post_id=${res.data[i].id}`
-              )
-              .then((image) => {
-                for (let i = 0; i < image.data.length; i++) {
-                  postImageList.push(image.data[i].file_path);
-                }
-                res.data[i].post_list = postImageList;
-              });
 
             const like_data = {
               post_id: res.data[i].id,
             };
-            const promise_like_count = axios
-              .post(
-                `${process.env.NEXT_PUBLIC_BASEURL}/posts/liked/count`,
-                like_data
-              )
-              .then((like) => {
-                res.data[i].liked_count = like.data;
-              });
 
-            const promise_like = axios
-              .get(
-                `${process.env.NEXT_PUBLIC_BASEURL}/posts/liked?user_id=${id}&post_id=${res.data[i].id}`
-              )
-              .then((liked) => {
-                likeList[res.data[i].id] = liked.data.is_liked;
-              })
-              .catch((error) => console.log(error));
+            promises.push(
+              Promise.all([
+                axios
+                  .post(
+                    `${process.env.NEXT_PUBLIC_BASEURL}/accounts/user`,
+                    user_data
+                  )
+                  .then((user) => {
+                    res.data[i].profile_path = user.data.file_path;
+                  }),
+                axios
+                  .get(
+                    `${process.env.NEXT_PUBLIC_BASEURL}/posts/image/list?post_id=${res.data[i].id}`
+                  )
+                  .then((image) => {
+                    const postImageList = [];
+                    for (let i = 0; i < image.data.length; i++) {
+                      postImageList.push(image.data[i].file_path);
+                    }
+                    res.data[i].post_list = postImageList;
+                  }),
+                axios
+                  .post(
+                    `${process.env.NEXT_PUBLIC_BASEURL}/posts/liked/count`,
+                    like_data
+                  )
+                  .then((like) => {
+                    res.data[i].liked_count = like.data;
+                  }),
+                axios
+                  .get(
+                    `${process.env.NEXT_PUBLIC_BASEURL}/posts/liked?user_id=${id}&post_id=${res.data[i].id}`
+                  )
+                  .then((liked) => {
+                    likeList[res.data[i].id] = liked.data.is_liked;
+                  }),
+                axios
+                  .get(
+                    `${process.env.NEXT_PUBLIC_BASEURL}/comments/post/list?post_id=${res.data[i].id}`
+                  )
+                  .then((comment) => {
+                    const commentList = [];
+                    for (let i = 0; i < comment.data.length; i++) {
+                      commentList.push(comment.data[i]);
+                    }
+                    res.data[i].comment_list = commentList;
+                  }),
+              ]).catch((error) => console.log(error))
+            );
 
-            promises_user.push(promise_user);
-            promises_image.push(promise_image);
-            promises_like_count.push(promise_like_count);
-            promises_like.push(promise_like);
             postData.push(res.data[i]);
           }
         }
 
-        Promise.all([
-          ...promises_user,
-          ...promises_image,
-          ...promises_like_count,
-          ...promises_like,
-        ])
+        Promise.all(promises)
           .then(() => {
             setPosts(postData);
+            console.log(postData);
             setCurImgIdxList(Array(postData.length).fill(0));
           })
           .catch((error) => {
@@ -168,7 +174,6 @@ function PostContent({ id }: Props): React.ReactElement {
       const newList = [...prevList];
       const newIndex = changeFunc(newList[index], imageCount);
 
-      console.log("newIndex: " + newIndex + ", imageCount: " + imageCount);
       if (
         (newIndex === 0 && newList[index] === 0) ||
         (newIndex === imageCount - 1 && newList[index] === imageCount - 1)
@@ -358,6 +363,13 @@ function PostContent({ id }: Props): React.ReactElement {
                 />
               </ContentText>
             </TextStyled>
+
+            {postData.comment_list.length > 0 && (
+              <TextStyled className={"grayText"} onClick={handleOpen}>
+                {`댓글 ${postData.comment_list.length}개 모두 보기`}
+              </TextStyled>
+            )}
+            <CommentModal open={open} handleClose={handleClose} />
           </TextWrap>
         </Content>
       ))}
