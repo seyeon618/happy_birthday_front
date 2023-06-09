@@ -1,11 +1,11 @@
 import { Avatar, keyframes } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import ClampLines from "react-clamp-lines";
 
 export const ContentWrap = styled("div")`
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  white-space: nowrap;
 `;
 
 export const Content = styled("div")`
@@ -92,6 +92,7 @@ export const IndicatorWrap = styled("div")`
   display: flex;
   flex-direction: row;
   margin: 0 auto;
+  align-items: center;
 
   transform: translateX(-10px);
 `;
@@ -149,19 +150,29 @@ export const TextWrap = styled("div")`
 
 export const TextStyled = styled("div")`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   font-family: NotoSans, sans-serif;
 `;
 
 export const ContentText = styled("div")`
-  -webkit-line-clamp: 2; /* 라인의 최대 수 */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: start;
+  a {
+    display: flex;
+    font-weight: 600;
+    padding-right: 5px;
+  }
 `;
 
-export const IdText = styled("div")`
-  font-weight: 600;
-  padding-right: 10px;
+export const ClampText = styled(ClampLines)`
+  button {
+    color: #555555;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    font-family: NotoSans, sans-serif;
+  }
 `;

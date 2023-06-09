@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 import {
+  ClampText,
   Content,
   ContentText,
   ContentWrap,
   CurImage,
   Heart,
-  IdText,
   ImageGalleryWrap,
   ImageWrap,
   Indicator,
@@ -30,6 +30,8 @@ function PostContent({ id }: Props): React.ReactElement {
   const [curImgIdxList, setCurImgIdxList] = useState<number[]>([]);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
+
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const getPost = () => {
     axios
@@ -272,6 +274,10 @@ function PostContent({ id }: Props): React.ReactElement {
   );
   ImageIndicator.displayName = "ImageIndicator";
 
+  const handleExpandClick = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <ContentWrap>
       {posts.map((postData, index) => (
@@ -309,8 +315,25 @@ function PostContent({ id }: Props): React.ReactElement {
               <TextStyled>좋아요 {postData.liked_count}개</TextStyled>
             )}
             <TextStyled>
-              <IdText>{postData.user_id}</IdText>
-              <ContentText> {postData.content}</ContentText>
+              <ContentText>
+                <a>{postData.user_id}</a>
+                <ClampText
+                  text={postData.content}
+                  id="customId"
+                  lines={2}
+                  moreText={"더 보기"}
+                  lessText={"접기"}
+                />
+
+                {/*{postData.content.length > 30 && !isExpanded ? (*/}
+                {/*  <div>*/}
+                {/*    <span>{postData.content.substring(0, 30) + "..."}</span>*/}
+                {/*    <ShowMore onClick={handleExpandClick}>{"더 보기"}</ShowMore>*/}
+                {/*  </div>*/}
+                {/*) : (*/}
+                {/*  <span>{postData.content}</span>*/}
+                {/*)}*/}
+              </ContentText>
             </TextStyled>
           </TextWrap>
         </Content>
