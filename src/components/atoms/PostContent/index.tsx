@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+} from "date-fns";
 
 import {
+  Circle,
   ClampText,
   Content,
   ContentText,
@@ -13,6 +19,7 @@ import {
   Indicator,
   IndicatorWrap,
   NotiWrap,
+  PostDate,
   PostHeader,
   PostHeaderText,
   StyledAvatar,
@@ -30,8 +37,6 @@ function PostContent({ id }: Props): React.ReactElement {
   const [curImgIdxList, setCurImgIdxList] = useState<number[]>([]);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
-
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const getPost = () => {
     axios
@@ -274,8 +279,31 @@ function PostContent({ id }: Props): React.ReactElement {
   );
   ImageIndicator.displayName = "ImageIndicator";
 
-  const handleExpandClick = () => {
-    setIsExpanded(!isExpanded);
+  const parseDateString = (dateString: string) => {
+    const year = Number(dateString.substring(0, 4));
+    const month = Number(dateString.substring(4, 6)) - 1;
+    const day = Number(dateString.substring(6, 8));
+    const hour = Number(dateString.substring(8, 10));
+    const minute = Number(dateString.substring(10, 12));
+    return new Date(year, month, day, hour, minute);
+  };
+
+  const TimeAgo = (dateString: string) => {
+    const date = parseDateString(dateString);
+    const now = new Date();
+
+    const minutesDifference = differenceInMinutes(now, date);
+    if (minutesDifference < 60) {
+      return <>{minutesDifference}분 전</>;
+    }
+
+    const hoursDifference = differenceInHours(now, date);
+    if (hoursDifference < 24) {
+      return <>{hoursDifference}시간 전</>;
+    }
+
+    const daysDifference = differenceInDays(now, date);
+    return <>{daysDifference}일 전</>;
   };
 
   return (
@@ -285,6 +313,8 @@ function PostContent({ id }: Props): React.ReactElement {
           <PostHeader>
             <StyledAvatar src={postData.profile_path} alt="Profile" />
             <PostHeaderText>{postData.user_id}</PostHeaderText>
+            <Circle>{"•"}</Circle>
+            <PostDate>{TimeAgo(postData.published_at)}</PostDate>
           </PostHeader>
           <ImageGalleryWrap>
             <ImageWrap
@@ -305,10 +335,12 @@ function PostContent({ id }: Props): React.ReactElement {
               filled={likeList[postData.id]}
               onClick={() => likePost(id, postData.id, likeList[postData.id])}
             />
-            <ImageIndicator
-              count={postData.post_list.length}
-              activeIndex={curImgIdxList[index]}
-            />
+            {postData.post_list.length > 1 && (
+              <ImageIndicator
+                count={postData.post_list.length}
+                activeIndex={curImgIdxList[index]}
+              />
+            )}
           </NotiWrap>
           <TextWrap>
             {postData.liked_count != 0 && (
@@ -324,15 +356,6 @@ function PostContent({ id }: Props): React.ReactElement {
                   moreText={"더 보기"}
                   lessText={"접기"}
                 />
-
-                {/*{postData.content.length > 30 && !isExpanded ? (*/}
-                {/*  <div>*/}
-                {/*    <span>{postData.content.substring(0, 30) + "..."}</span>*/}
-                {/*    <ShowMore onClick={handleExpandClick}>{"더 보기"}</ShowMore>*/}
-                {/*  </div>*/}
-                {/*) : (*/}
-                {/*  <span>{postData.content}</span>*/}
-                {/*)}*/}
               </ContentText>
             </TextStyled>
           </TextWrap>

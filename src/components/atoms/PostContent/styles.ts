@@ -40,6 +40,17 @@ export const PostHeaderText = styled("div")`
   font-weight: 500;
 `;
 
+export const Circle = styled("div")`
+  padding: 0 5px;
+  color: #737373;
+  font-family: NotoSans, sans-serif;
+`;
+
+export const PostDate = styled("div")`
+  color: #737373;
+  font-family: NotoSans, sans-serif;
+`;
+
 export const ImageGalleryWrap = styled("div")`
   width: 100%;
   height: 50%;
