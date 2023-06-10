@@ -1,6 +1,7 @@
 import { Avatar, keyframes } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ClampLines from "react-clamp-lines";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 export const ContentWrap = styled("div")`
   width: 100%;
@@ -89,6 +90,24 @@ export const Heart = styled("div")<{ filled?: boolean }>`
   width: 23px;
   height: 23px;
 `;
+
+export const SwiperStyled = styled(Swiper)`
+  &.swiper {
+    width: 100%;
+    height: 100%;
+    overflow: unset;
+  }
+
+  .swiper-button-next {
+    color: #d9d9d9;
+  }
+
+  div.swiper-pagination {
+    bottom: -15px;
+  }
+`;
+
+export const SwiperSlideStyled = styled(SwiperSlide)``;
 
 export const CurImage = styled("img")`
   width: 100%;

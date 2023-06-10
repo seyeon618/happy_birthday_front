@@ -5,6 +5,7 @@ import {
   differenceInHours,
   differenceInMinutes,
 } from "date-fns";
+import { Pagination } from "swiper";
 
 import CommentModal from "../CommentModal";
 
@@ -25,9 +26,14 @@ import {
   PostHeader,
   PostHeaderText,
   StyledAvatar,
+  SwiperSlideStyled,
+  SwiperStyled,
   TextStyled,
   TextWrap,
 } from "./styles";
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 interface Props {
   id: string;
@@ -36,9 +42,6 @@ interface Props {
 function PostContent({ id }: Props): React.ReactElement {
   const [posts, setPosts] = useState([]);
   const [likeList, setLikeList] = useState<Record<number, boolean>>({});
-  const [curImgIdxList, setCurImgIdxList] = useState<number[]>([]);
-  const [touchStartX, setTouchStartX] = useState(0);
-  const [touchEndX, setTouchEndX] = useState(0);
 
   // modal
   const [open, setOpen] = React.useState(false);
@@ -119,8 +122,6 @@ function PostContent({ id }: Props): React.ReactElement {
         Promise.all(promises)
           .then(() => {
             setPosts(postData);
-            console.log(postData);
-            setCurImgIdxList(Array(postData.length).fill(0));
           })
           .catch((error) => {
             console.log(error.response);
@@ -169,121 +170,6 @@ function PostContent({ id }: Props): React.ReactElement {
     });
   };
 
-  const changeImg = (index, imageCount, changeFunc) => {
-    setCurImgIdxList((prevList) => {
-      const newList = [...prevList];
-      const newIndex = changeFunc(newList[index], imageCount);
-
-      if (
-        (newIndex === 0 && newList[index] === 0) ||
-        (newIndex === imageCount - 1 && newList[index] === imageCount - 1)
-      ) {
-        return prevList;
-      }
-
-      newList[index] = newIndex;
-      return newList;
-    });
-  };
-
-  const prevImg = (index, imageCount) => {
-    changeImg(index, imageCount, (curIndex, count) =>
-      Math.max(0, curIndex - 1)
-    );
-  };
-
-  const nextImg = (index, imageCount) => {
-    changeImg(index, imageCount, (curIndex, count) =>
-      Math.min(count - 1, curIndex + 1)
-    );
-  };
-
-  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-    setTouchStartX(event.touches[0].clientX);
-  };
-
-  const handleTouchEnd = (
-    event: React.TouchEvent<HTMLDivElement>,
-    index,
-    imageCount
-  ) => {
-    setTouchEndX(event.changedTouches[0].clientX);
-
-    const diffX = touchStartX - touchEndX;
-    if (curImgIdxList[index] === 0 && diffX < 0) return;
-    if (curImgIdxList[index] === imageCount - 1 && diffX > 0) return;
-
-    handleSwipe(index, imageCount);
-  };
-
-  const handleSwipe = (index, imageCount) => {
-    const diffX = touchStartX - touchEndX;
-    if (diffX > 0) {
-      // 왼쪽으로 스와이프 - 다음 이미지
-      nextImg(index, imageCount);
-    } else if (diffX < 0) {
-      // 오른쪽으로 스와이프 - 이전 이미지
-      prevImg(index, imageCount);
-    }
-  };
-
-  interface ImageIndicatorProps {
-    count: number;
-    activeIndex: number;
-  }
-
-  const ImageIndicator = React.forwardRef<HTMLDivElement, ImageIndicatorProps>(
-    ({ count, activeIndex }, forwardedRef) => {
-      const ref = useRef<HTMLDivElement>(null);
-      const [scrollPos, setScrollPos] = useState(0);
-
-      useEffect(() => {
-        if (ref.current) {
-          const newPos = Math.max(
-            0,
-            (activeIndex - 2) * 15
-          ); /* 활성 동그라미 기준으로 좌측으로 2개의 동그라미까지 표시 */
-          ref.current.scrollTo({ left: newPos, behavior: "smooth" });
-          setScrollPos(newPos);
-        }
-      }, [activeIndex]);
-
-      return (
-        <IndicatorWrap ref={ref}>
-          {Array.from({ length: count }).map((_, index) => {
-            let min = 0;
-            let max = Math.min(4, count - 1);
-
-            if (count > 5) {
-              if (activeIndex <= 2) {
-                min = 0;
-                max = 4;
-              } else if (activeIndex >= count - 3) {
-                min = count - 5;
-                max = count - 1;
-              } else {
-                min = activeIndex - 2;
-                max = activeIndex + 2;
-              }
-            }
-
-            if (index >= min && index <= max) {
-              return (
-                <Indicator
-                  key={index}
-                  className={index === activeIndex ? "active" : ""}
-                />
-              );
-            }
-
-            return null;
-          })}
-        </IndicatorWrap>
-      );
-    }
-  );
-  ImageIndicator.displayName = "ImageIndicator";
-
   const parseDateString = (dateString: string) => {
     const year = Number(dateString.substring(0, 4));
     const month = Number(dateString.substring(4, 6)) - 1;
@@ -313,7 +199,7 @@ function PostContent({ id }: Props): React.ReactElement {
 
   return (
     <ContentWrap>
-      {posts.map((postData, index) => (
+      {posts.map((postData) => (
         <Content key={postData.id}>
           <PostHeader>
             <StyledAvatar src={postData.profile_path} alt="Profile" />
@@ -322,17 +208,20 @@ function PostContent({ id }: Props): React.ReactElement {
             <PostDate>{TimeAgo(postData.published_at)}</PostDate>
           </PostHeader>
           <ImageGalleryWrap>
-            <ImageWrap
-              onTouchStart={handleTouchStart}
-              onTouchEnd={(e) => {
-                handleTouchEnd(e, index, postData.post_list.length);
+            <SwiperStyled
+              pagination={{
+                dynamicBullets: true,
+                clickable: true,
               }}
+              modules={[Pagination]}
+              className="swiper"
             >
-              <CurImage
-                src={postData.post_list[curImgIdxList[index]]}
-                alt={`Image ${curImgIdxList[index]}`}
-              />
-            </ImageWrap>
+              {postData.post_list?.map((img, index) => (
+                <SwiperSlideStyled key={index}>
+                  <CurImage src={img} alt={`Image ${img}`} />
+                </SwiperSlideStyled>
+              ))}
+            </SwiperStyled>
           </ImageGalleryWrap>
 
           <NotiWrap>
@@ -340,12 +229,6 @@ function PostContent({ id }: Props): React.ReactElement {
               filled={likeList[postData.id]}
               onClick={() => likePost(id, postData.id, likeList[postData.id])}
             />
-            {postData.post_list.length > 1 && (
-              <ImageIndicator
-                count={postData.post_list.length}
-                activeIndex={curImgIdxList[index]}
-              />
-            )}
           </NotiWrap>
           <TextWrap>
             {postData.liked_count != 0 && (
