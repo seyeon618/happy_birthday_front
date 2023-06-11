@@ -11,6 +11,7 @@ import Home from "./pages/home/index";
 import Root from "./pages/index";
 import Profile from "./pages/profile/index";
 import reportWebVitals from "./reportWebVitals";
+import * as serviceWorker from "./serviceWorkerRegistration";
 
 import "./index.css";
 
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <CookiesProvider>
@@ -56,4 +58,5 @@ root.render(
   </React.StrictMode>
 );
 
+serviceWorker.register();
 reportWebVitals();
