@@ -1,6 +1,7 @@
 import React from "react";
+import Sheet from "react-modal-sheet";
 
-import { CommentModalBox, ModalContainer, StyledModal } from "./styles";
+import { SheetContainer } from "./styles";
 
 interface Props {
   open: boolean;
@@ -9,11 +10,14 @@ interface Props {
 
 function CommentModal({ open, handleClose }: Props): React.ReactElement {
   return (
-    <StyledModal open={open} onClose={handleClose}>
-      <ModalContainer>
-        <CommentModalBox>{"content"}</CommentModalBox>
-      </ModalContainer>
-    </StyledModal>
+    <Sheet isOpen={open} onClose={handleClose}>
+      <SheetContainer>
+        <Sheet.Header />
+        <Sheet.Content>{/* Your sheet content goes here */}</Sheet.Content>
+      </SheetContainer>
+
+      <Sheet.Backdrop />
+    </Sheet>
   );
 }
 
