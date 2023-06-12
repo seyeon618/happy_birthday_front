@@ -6,6 +6,7 @@ import {
   differenceInMinutes,
 } from "date-fns";
 import { Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import CommentModal from "../CommentModal";
 
@@ -214,7 +215,7 @@ function PostContent({ id }: Props): React.ReactElement {
                 clickable: true,
               }}
               modules={[Pagination]}
-              className="swiper"
+              className="mySwiper"
             >
               {postData.post_list?.map((img, index) => (
                 <SwiperSlideStyled key={index}>
@@ -222,6 +223,23 @@ function PostContent({ id }: Props): React.ReactElement {
                 </SwiperSlideStyled>
               ))}
             </SwiperStyled>
+            {/*<Swiper*/}
+            {/*  pagination={{*/}
+            {/*    dynamicBullets: true,*/}
+            {/*  }}*/}
+            {/*  modules={[Pagination]}*/}
+            {/*  className="mySwiper"*/}
+            {/*>*/}
+            {/*  <SwiperSlide>Slide 1</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 2</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 3</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 4</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 5</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 6</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 7</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 8</SwiperSlide>*/}
+            {/*  <SwiperSlide>Slide 9</SwiperSlide>*/}
+            {/*</Swiper>*/}
           </ImageGalleryWrap>
 
           <NotiWrap>
@@ -247,9 +265,9 @@ function PostContent({ id }: Props): React.ReactElement {
               </ContentText>
             </TextStyled>
 
-            {postData.comment_list.length > 0 && (
+            {postData.comment_list?.length > 0 && (
               <TextStyled className={"grayText"} onClick={handleOpen}>
-                {`댓글 ${postData.comment_list.length}개 모두 보기`}
+                {`댓글 ${postData.comment_list?.length}개 모두 보기`}
               </TextStyled>
             )}
             <CommentModal open={open} handleClose={handleClose} />

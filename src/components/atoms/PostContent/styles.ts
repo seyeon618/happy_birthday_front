@@ -95,15 +95,10 @@ export const SwiperStyled = styled(Swiper)`
   &.swiper {
     width: 100%;
     height: 100%;
-    overflow: unset;
   }
 
   .swiper-button-next {
     color: #d9d9d9;
-  }
-
-  div.swiper-pagination {
-    bottom: -15px;
   }
 `;
 
