@@ -43,12 +43,16 @@ function Home(): React.ReactElement {
         });
 
         setUser(sortedData);
+      })
+      .catch((error) => {
+        // 오류 처리
+        console.error(error);
       });
   };
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [id]);
 
   const onClickIcon = (path: string) => {
     router.push(path);

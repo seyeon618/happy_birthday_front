@@ -6,7 +6,6 @@ import {
   differenceInMinutes,
 } from "date-fns";
 import { Pagination } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 import CommentModal from "../CommentModal";
 
@@ -19,9 +18,6 @@ import {
   CurImage,
   Heart,
   ImageGalleryWrap,
-  ImageWrap,
-  Indicator,
-  IndicatorWrap,
   NotiWrap,
   PostDate,
   PostHeader,
@@ -46,7 +42,16 @@ function PostContent({ id }: Props): React.ReactElement {
 
   // modal
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const [selectPostComments, setSelectPostComments] = React.useState([]);
+  const [selectPostId, setSelectPostId] = React.useState(null);
+
+  const handleOpen = (postId, comments) => {
+    setSelectPostComments(comments);
+    setSelectPostId(postId);
+
+    setOpen(true);
+  };
+
   const handleClose = () => setOpen(false);
 
   const getPost = () => {
@@ -200,80 +205,81 @@ function PostContent({ id }: Props): React.ReactElement {
 
   return (
     <ContentWrap>
-      {posts.map((postData) => (
-        <Content key={postData.id}>
-          <PostHeader>
-            <StyledAvatar src={postData.profile_path} alt="Profile" />
-            <PostHeaderText>{postData.user_id}</PostHeaderText>
-            <Circle>{"•"}</Circle>
-            <PostDate>{TimeAgo(postData.published_at)}</PostDate>
-          </PostHeader>
-          <ImageGalleryWrap>
-            <SwiperStyled
-              pagination={{
-                dynamicBullets: true,
-                clickable: true,
-              }}
-              modules={[Pagination]}
-              className="mySwiper"
-            >
-              {postData.post_list?.map((img, index) => (
-                <SwiperSlideStyled key={index}>
-                  <CurImage src={img} alt={`Image ${img}`} />
-                </SwiperSlideStyled>
-              ))}
-            </SwiperStyled>
-            {/*<Swiper*/}
-            {/*  pagination={{*/}
-            {/*    dynamicBullets: true,*/}
-            {/*  }}*/}
-            {/*  modules={[Pagination]}*/}
-            {/*  className="mySwiper"*/}
-            {/*>*/}
-            {/*  <SwiperSlide>Slide 1</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 2</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 3</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 4</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 5</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 6</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 7</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 8</SwiperSlide>*/}
-            {/*  <SwiperSlide>Slide 9</SwiperSlide>*/}
-            {/*</Swiper>*/}
-          </ImageGalleryWrap>
+      {posts
+        .sort(
+          (a, b) =>
+            parseDateString(b.published_at).getTime() -
+            parseDateString(a.published_at).getTime()
+        )
+        .map((postData) => (
+          <Content key={postData.id}>
+            <PostHeader>
+              <StyledAvatar src={postData.profile_path} alt="Profile" />
+              <PostHeaderText>{postData.user_id}</PostHeaderText>
+              <Circle>{"•"}</Circle>
+              <PostDate>{TimeAgo(postData.published_at)}</PostDate>
+            </PostHeader>
+            <ImageGalleryWrap>
+              <SwiperStyled
+                pagination={{
+                  dynamicBullets: true,
+                  clickable: true,
+                }}
+                modules={[Pagination]}
+                className="mySwiper"
+              >
+                {postData.post_list?.map((img, index) => (
+                  <SwiperSlideStyled key={index}>
+                    <CurImage src={img} alt={`Image ${img}`} />
+                  </SwiperSlideStyled>
+                ))}
+              </SwiperStyled>
+            </ImageGalleryWrap>
 
-          <NotiWrap>
-            <Heart
-              filled={likeList[postData.id]}
-              onClick={() => likePost(id, postData.id, likeList[postData.id])}
-            />
-          </NotiWrap>
-          <TextWrap>
-            {postData.liked_count != 0 && (
-              <TextStyled>좋아요 {postData.liked_count}개</TextStyled>
-            )}
-            <TextStyled>
-              <ContentText>
-                <a>{postData.user_id}</a>
-                <ClampText
-                  text={postData.content}
-                  id="customId"
-                  lines={2}
-                  moreText={"더 보기"}
-                  lessText={"접기"}
-                />
-              </ContentText>
-            </TextStyled>
-
-            {postData.comment_list?.length > 0 && (
-              <TextStyled className={"grayText"} onClick={handleOpen}>
-                {`댓글 ${postData.comment_list?.length}개 모두 보기`}
+            <NotiWrap>
+              <Heart
+                filled={likeList[postData.id]}
+                onClick={() => likePost(id, postData.id, likeList[postData.id])}
+              />
+            </NotiWrap>
+            <TextWrap>
+              {postData.liked_count != 0 && (
+                <TextStyled>좋아요 {postData.liked_count}개</TextStyled>
+              )}
+              <TextStyled>
+                <ContentText>
+                  <a>{postData.user_id}</a>
+                  <ClampText
+                    text={postData.content}
+                    id="customId"
+                    lines={1}
+                    moreText={"더 보기"}
+                    lessText={"접기"}
+                  />
+                </ContentText>
               </TextStyled>
-            )}
-            <CommentModal open={open} handleClose={handleClose} />
-          </TextWrap>
-        </Content>
-      ))}
+
+              {postData.comment_list?.length > 0 && (
+                <TextStyled
+                  className={"grayText"}
+                  onClick={() => handleOpen(postData.id, postData.comment_list)}
+                >
+                  {`댓글 ${postData.comment_list?.length}개 모두 보기`}
+                </TextStyled>
+              )}
+            </TextWrap>
+          </Content>
+        ))}
+
+      <CommentModal
+        open={open}
+        handleClose={handleClose}
+        id={id}
+        post_id={selectPostId}
+        comment_list={selectPostComments}
+        timeAgo={TimeAgo}
+        parseDateString={parseDateString}
+      />
     </ContentWrap>
   );
 }
