@@ -6,22 +6,39 @@ import ClampLines from "react-clamp-lines";
 import Sheet from "react-modal-sheet";
 
 export const SheetContainer = styled(Sheet.Container)`
-  height: calc(100% - env(safe-area-inset-top) - 200px) !important;
+  height: 70% !important;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const SheetHeader = styled(Sheet.Header)`
+  height: 81px;
 `;
 
 export const SheetContent = styled(Sheet.Content)`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: calc(100% - env(safe-area-inset-top));
+  max-height: 100%;
+  touch-action: auto !important;
 `;
 
 export const CommentHeader = styled("div")`
   height: 40px;
+  width: 100%;
   font-size: 16px;
   font-family: NotoSans, sans-serif;
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: fixed;
+  margin-top: 40px;
+`;
+
+export const CommentContent = styled("div")`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
 `;
 
 export const CommentWrap = styled("div")`
@@ -75,6 +92,11 @@ export const ClampText = styled(ClampLines)`
     padding: 0;
     font-family: NotoSans, sans-serif;
   }
+`;
+
+export const Footer = styled("div")`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const InputWrap = styled("div")`

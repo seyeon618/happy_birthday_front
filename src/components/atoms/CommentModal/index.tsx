@@ -7,15 +7,18 @@ import Sheet from "react-modal-sheet";
 import {
   ClampText,
   CommentContainer,
+  CommentContent,
   CommentHeader,
   CommentIDWrap,
   CommentMyAvatar,
   CommentUploadButton,
   CommentWrap,
   ContentWrap,
+  Footer,
   InputWrap,
   SheetContainer,
   SheetContent,
+  SheetHeader,
   StyledAvatar,
   StyledDate,
   StyledId,
@@ -112,35 +115,39 @@ function CommentModal({
   return (
     <Sheet isOpen={open} onClose={handleClose}>
       <SheetContainer>
-        <Sheet.Header />
+        <SheetHeader />
+        <CommentHeader>{"댓글"}</CommentHeader>
         <SheetContent>
-          <CommentHeader>{"댓글"}</CommentHeader>
-          {comment_list
-            .sort(
-              (a, b) =>
-                parseDateString(b.date).getTime() -
-                parseDateString(a.date).getTime()
-            )
-            .map((commentData, index) => (
-              <CommentWrap key={commentData.id}>
-                <StyledAvatar src={profile[index]} alt="Profile" />
-                <CommentContainer>
-                  <CommentIDWrap>
-                    <StyledId>{commentData.user_id}</StyledId>
-                    <StyledDate>{timeAgo(commentData.date)}</StyledDate>
-                  </CommentIDWrap>
-                  <ContentWrap>
-                    <ClampText
-                      text={commentData.content}
-                      id="customId"
-                      lines={1}
-                      moreText={"더 보기"}
-                      lessText={"접기"}
-                    />
-                  </ContentWrap>
-                </CommentContainer>
-              </CommentWrap>
-            ))}
+          <CommentContent>
+            {comment_list
+              .sort(
+                (a, b) =>
+                  parseDateString(b.date).getTime() -
+                  parseDateString(a.date).getTime()
+              )
+              .map((commentData, index) => (
+                <CommentWrap key={commentData.id}>
+                  <StyledAvatar src={profile[index]} alt="Profile" />
+                  <CommentContainer>
+                    <CommentIDWrap>
+                      <StyledId>{commentData.user_id}</StyledId>
+                      <StyledDate>{timeAgo(commentData.date)}</StyledDate>
+                    </CommentIDWrap>
+                    <ContentWrap>
+                      <ClampText
+                        text={commentData.content}
+                        id="customId"
+                        lines={1}
+                        moreText={"더 보기"}
+                        lessText={"접기"}
+                      />
+                    </ContentWrap>
+                  </CommentContainer>
+                </CommentWrap>
+              ))}
+          </CommentContent>
+        </SheetContent>
+        <Footer>
           <Divider light />
           <InputWrap>
             <CommentMyAvatar src={myProfile} alt="MyAvatar" />
@@ -160,7 +167,7 @@ function CommentModal({
               }
             />
           </InputWrap>
-        </SheetContent>
+        </Footer>
       </SheetContainer>
 
       <Sheet.Backdrop />
