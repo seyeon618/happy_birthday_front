@@ -128,3 +128,27 @@ export const CommentUploadButton = styled(Button)`
   min-width: 0;
   font-family: NotoSans, sans-serif;
 `;
+
+export const EmptyContentWrap = styled("div")`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+export const EmptyGuideMessage = styled("div")`
+  font-family: NotoSans, sans-serif;
+
+  &.main {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+  }
+
+  &.sub {
+    font-size: 16px;
+    color: #999999;
+  }
+`;

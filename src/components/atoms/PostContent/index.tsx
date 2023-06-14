@@ -263,14 +263,14 @@ function PostContent({ id }: Props): React.ReactElement {
                 </ContentText>
               </TextStyled>
 
-              {postData.comment_list?.length > 0 && (
-                <TextStyled
-                  className={"grayText"}
-                  onClick={() => handleOpen(postData.id, postData.comment_list)}
-                >
-                  {`댓글 ${postData.comment_list?.length}개 모두 보기`}
-                </TextStyled>
-              )}
+              <TextStyled
+                className={"grayText"}
+                onClick={() => handleOpen(postData.id, postData.comment_list)}
+              >
+                {postData.comment_list?.length > 0
+                  ? `댓글 ${postData.comment_list?.length}개 모두 보기`
+                  : `답글 달기`}
+              </TextStyled>
             </TextWrap>
           </Content>
         ))}

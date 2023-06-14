@@ -14,6 +14,8 @@ import {
   CommentUploadButton,
   CommentWrap,
   ContentWrap,
+  EmptyContentWrap,
+  EmptyGuideMessage,
   Footer,
   InputWrap,
   SheetContainer,
@@ -114,7 +116,54 @@ function CommentModal({
       )
       .then((res) => {
         handleAddComment(res.data);
+        setComment("");
       });
+  };
+
+  const getComments = () => {
+    return (
+      <CommentContent>
+        {comment_list
+          .sort(
+            (a, b) =>
+              parseDateString(b.date).getTime() -
+              parseDateString(a.date).getTime()
+          )
+          .map((commentData, index) => (
+            <CommentWrap key={commentData.id}>
+              <StyledAvatar src={profile[index]} alt="Profile" />
+              <CommentContainer>
+                <CommentIDWrap>
+                  <StyledId>{commentData.user_id}</StyledId>
+                  <StyledDate>{timeAgo(commentData.date)}</StyledDate>
+                </CommentIDWrap>
+                <ContentWrap>
+                  <ClampText
+                    text={commentData.content}
+                    id="customId"
+                    lines={1}
+                    moreText={"더 보기"}
+                    lessText={"접기"}
+                  />
+                </ContentWrap>
+              </CommentContainer>
+            </CommentWrap>
+          ))}
+      </CommentContent>
+    );
+  };
+
+  const getEmptyContent = () => {
+    return (
+      <EmptyContentWrap>
+        <EmptyGuideMessage className="main">
+          {"아직 댓글이 없습니다."}
+        </EmptyGuideMessage>
+        <EmptyGuideMessage className="sub">
+          {"댓글을 남겨보세요."}
+        </EmptyGuideMessage>
+      </EmptyContentWrap>
+    );
   };
 
   return (
@@ -123,34 +172,7 @@ function CommentModal({
         <SheetHeader />
         <CommentHeader>{"댓글"}</CommentHeader>
         <SheetContent>
-          <CommentContent>
-            {comment_list
-              .sort(
-                (a, b) =>
-                  parseDateString(b.date).getTime() -
-                  parseDateString(a.date).getTime()
-              )
-              .map((commentData, index) => (
-                <CommentWrap key={commentData.id}>
-                  <StyledAvatar src={profile[index]} alt="Profile" />
-                  <CommentContainer>
-                    <CommentIDWrap>
-                      <StyledId>{commentData.user_id}</StyledId>
-                      <StyledDate>{timeAgo(commentData.date)}</StyledDate>
-                    </CommentIDWrap>
-                    <ContentWrap>
-                      <ClampText
-                        text={commentData.content}
-                        id="customId"
-                        lines={1}
-                        moreText={"더 보기"}
-                        lessText={"접기"}
-                      />
-                    </ContentWrap>
-                  </CommentContainer>
-                </CommentWrap>
-              ))}
-          </CommentContent>
+          {comment_list.length > 0 ? getComments() : getEmptyContent()}
         </SheetContent>
         <Footer>
           <Divider light />
@@ -158,6 +180,7 @@ function CommentModal({
             <CommentMyAvatar src={myProfile} alt="MyAvatar" />
             <StyledInput
               placeholder="댓글 달기..."
+              value={comment}
               disableUnderline={true}
               onChange={handleInputCange}
               endAdornment={
