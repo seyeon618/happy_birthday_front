@@ -220,8 +220,8 @@ function PostContent({ id }: Props): React.ReactElement {
       });
   };
 
-  const handleEdit = () => {
-    router.push(`/feed/edit`);
+  const handleEdit = (post_id: number) => {
+    router.push(`/feed/edit/${post_id}`);
   };
 
   return (
@@ -243,7 +243,7 @@ function PostContent({ id }: Props): React.ReactElement {
                 <Menu
                   post_id={postData.id}
                   handleClickDelete={() => handleClickDelete(postData.id)}
-                  handleEdit={handleEdit}
+                  handleEdit={() => handleEdit(postData.id)}
                 />
               )}
             </PostHeader>

@@ -7,6 +7,7 @@ import Login from "./pages/accounts/login";
 import ResetPassWord from "./pages/accounts/password/reset";
 import SignUp from "./pages/accounts/signup";
 import Feed from "./pages/feed/create";
+import EditFeed from "./pages/feed/edit/[postId]";
 import Home from "./pages/home/index";
 import Root from "./pages/index";
 import Profile from "./pages/profile/index";
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/feed/create",
     element: <Feed />,
+  },
+  {
+    path: "/feed/edit/:postId",
+    element: <EditFeed />,
   },
   {
     path: "/profile",

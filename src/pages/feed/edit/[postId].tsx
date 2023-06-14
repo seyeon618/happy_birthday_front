@@ -23,10 +23,14 @@ import {
   TextWrap,
   Toggle,
   UploadButton,
-} from "../../../style/feed/create/styles";
+} from "../../../style/feed/edit/styles";
 
 function Feed(): React.ReactElement {
+  const router = useRouter();
+
   const [id, setId] = useState(null);
+  const { postId } = router.query;
+  const [post, setPost] = useState([]);
   const [profile, setProfile] = useState("");
   const [curImgIdx, setCurImgIdx] = useState(-1);
   const [previewImages, setPreviewImages] = useState([]);
@@ -34,9 +38,10 @@ function Feed(): React.ReactElement {
   // const [isFeatImage, setIsFeatImage] = useState(false);
   const [text, setText] = useState("");
 
-  const router = useRouter();
-
   useEffect(() => {
+    console.log("edit");
+    console.log(id);
+    console.log(postId);
     const getProfile = async () => {
       const myProfilePromise = axios
         .get(
@@ -48,8 +53,39 @@ function Feed(): React.ReactElement {
       setProfile(myProfileData);
     };
 
+    const getPost = async () => {
+      const postPromise = axios
+        .post(
+          `{${process.env.NEXT_PUBLIC_BASEURL}/posts/get?user_id=${id}&post_id=${postId}`
+        )
+        .then((res) => res.data);
+
+      const postData = await Promise.resolve(postPromise);
+      setPost(postData);
+    };
+
+    const getPreviewImg = async () => {
+      const imgPromise = axios
+        .post(
+          `{${process.env.NEXT_PUBLIC_BASEURL}/posts/image/list?post_id=${postId}`
+        )
+        .then((res) => res.data);
+
+      const imgData = await Promise.resolve(imgPromise);
+
+      const imgUrl = [];
+      imgData.map((userData) => imgUrl.push(userData.file_path));
+      setPreviewImageUrl(imgData);
+      console.log(imgData);
+    };
+
     if (id) {
       getProfile();
+    }
+
+    if (id && postId) {
+      getPost();
+      getPreviewImg();
     }
   }, [id]);
 
@@ -140,8 +176,8 @@ function Feed(): React.ReactElement {
         <IconButtonStyled onClick={handleGoHome}>
           <ArrowBackIosIcon />
         </IconButtonStyled>
-        <HeaderText>{"새 게시물"}</HeaderText>
-        <ShareText onClick={handleShare}>{"공유"}</ShareText>
+        <HeaderText>{"정보 수정"}</HeaderText>
+        <ShareText onClick={handleShare}>{"완료"}</ShareText>
       </Header>
       <ImageWrap>
         <label htmlFor={"upload_file"}>
