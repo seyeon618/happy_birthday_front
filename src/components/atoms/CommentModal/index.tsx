@@ -33,6 +33,7 @@ interface Props {
   comment_list: any;
   timeAgo: (dateString: string) => JSX.Element;
   parseDateString: (dateString: string) => Date;
+  handleAddComment: (newComment: any) => void;
 }
 
 function CommentModal({
@@ -43,6 +44,7 @@ function CommentModal({
   comment_list,
   timeAgo,
   parseDateString,
+  handleAddComment,
 }: Props): React.ReactElement {
   const [profile, setProfile] = useState([]);
   const [myProfile, setMyProfile] = useState("");
@@ -105,10 +107,14 @@ function CommentModal({
       date: getCurrentDate(),
       user_id: id,
     };
-    axios.post(
-      `${process.env.NEXT_PUBLIC_BASEURL}/comments/add?post_id=${post_id}`,
-      data
-    );
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_BASEURL}/comments/add?post_id=${post_id}`,
+        data
+      )
+      .then((res) => {
+        handleAddComment(res.data);
+      });
   };
 
   return (

@@ -54,6 +54,10 @@ function PostContent({ id }: Props): React.ReactElement {
 
   const handleClose = () => setOpen(false);
 
+  const handleAddComment = (newComment) => {
+    setSelectPostComments((prevComments) => [...prevComments, newComment]);
+  };
+
   const getPost = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_BASEURL}/posts/list`)
@@ -279,6 +283,7 @@ function PostContent({ id }: Props): React.ReactElement {
         comment_list={selectPostComments}
         timeAgo={TimeAgo}
         parseDateString={parseDateString}
+        handleAddComment={handleAddComment}
       />
     </ContentWrap>
   );
