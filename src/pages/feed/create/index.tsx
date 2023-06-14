@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import CropIcon from "@mui/icons-material/Crop";
 import axios from "axios";
 import FormData from "form-data";
 
+import ImageGallery from "../../../components/atoms/ImageGallery";
 import Auth from "../../../components/common/Auth";
 import {
   Container,
-  CurImage,
+  ContentWrap,
   EmptyImageWrap,
   Header,
   HeaderText,
+  HintMessage,
   IconButtonStyled,
-  ImageButton,
-  ImageContainer,
-  ImageGalleryWrap,
   ImageWrap,
+  PostHeader,
+  PostHeaderText,
   ShareText,
-  TagWrap,
+  StyledAvatar,
+  TextArea,
   TextWrap,
   Toggle,
   UploadButton,
@@ -27,24 +27,32 @@ import {
 
 function Create(): React.ReactElement {
   const [id, setId] = useState(null);
+  const [profile, setProfile] = useState("");
   const [postId, setPostId] = useState(null);
   const [curImgIdx, setCurImgIdx] = useState(-1);
   const [previewImages, setPreviewImages] = useState([]);
   const [previewImageUrl, setPreviewImageUrl] = useState([]);
   const [isFeatImage, setIsFeatImage] = useState(false);
+  const [text, setText] = useState("");
 
   const router = useRouter();
 
-  const prevImg = () => {
-    setCurImgIdx((curImgIdx) => curImgIdx - 1);
-  };
+  useEffect(() => {
+    const getProfile = async () => {
+      const myProfilePromise = axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BASEURL}/accounts/profile?user_id=${id}`
+        )
+        .then((res) => res.data);
 
-  const nextImg = () => {
-    setCurImgIdx((curImgIdx) => curImgIdx + 1);
-  };
+      const myProfileData = await Promise.resolve(myProfilePromise);
+      setProfile(myProfileData);
+    };
 
-  const hiddenNext = curImgIdx < 0 || curImgIdx == previewImageUrl.length - 1;
-  const hiddenPrev = curImgIdx < 0 || curImgIdx == 0;
+    if (id) {
+      getProfile();
+    }
+  }, [id]);
 
   const handleAddImages = (event) => {
     const fileList = event.target.files;
@@ -66,8 +74,8 @@ function Create(): React.ReactElement {
     setPreviewImages(fileList);
   };
 
-  const handleFeatImage = () => {
-    setIsFeatImage(!isFeatImage);
+  const handleChangeText = (e) => {
+    setText(e.target.value);
   };
 
   const getCurrentDate = () => {
@@ -78,17 +86,10 @@ function Create(): React.ReactElement {
     const hours = String(now.getHours()).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
 
-    const currentDateTime = `${year}${day}${month}${hours}${minutes}`;
-
-    return currentDateTime;
+    return `${year}${month}${day}${hours}${minutes}`;
   };
 
   const handleShare = () => {
-    const textarea = document.getElementById(
-      "text_area"
-    ) as HTMLTextAreaElement;
-    const text = textarea.value;
-
     const data = {
       writer: {
         id: id,
@@ -119,7 +120,7 @@ function Create(): React.ReactElement {
           )
           .then((res) => {
             setPostId(res.data.id);
-            router.push(`/home`);
+            handleGoHome();
           })
           .catch((error) => {
             console.log(error.response);
@@ -130,57 +131,58 @@ function Create(): React.ReactElement {
       });
   };
 
+  const handleGoHome = () => {
+    router.push(`/home`);
+  };
+
   return (
     <Container>
       <Auth setId={setId} />
       <Header>
         <IconButtonStyled>
-          <ArrowBackIosIcon />
+          <ArrowBackIosIcon onClick={handleGoHome} />
         </IconButtonStyled>
         <HeaderText>{"새 게시물"}</HeaderText>
         <ShareText onClick={handleShare}>{"공유"}</ShareText>
       </Header>
+      <ImageWrap>
+        <label htmlFor={"upload_file"}>
+          {curImgIdx >= 0 ? (
+            <ImageGallery img_list={previewImageUrl} />
+          ) : (
+            <EmptyImageWrap>{"이미지를 업로드 해주세요"}</EmptyImageWrap>
+          )}
+        </label>
+      </ImageWrap>
+      <UploadButton>
+        <input
+          type={"file"}
+          onChange={handleAddImages}
+          id={"upload_file"}
+          multiple
+        />
+      </UploadButton>
 
-      <ImageGalleryWrap>
-        <ImageButton id="prev" onClick={prevImg} visible={!hiddenPrev}>
-          <ArrowBackIosIcon />
-        </ImageButton>
-        <ImageWrap>
-          <label htmlFor={"upload_file"}>
-            {curImgIdx >= 0 ? (
-              <ImageContainer>
-                <CurImage
-                  isFeat={isFeatImage}
-                  src={previewImageUrl[curImgIdx]}
-                  alt={`Image ${curImgIdx}`}
-                />
-                <Toggle onClick={handleFeatImage}>
-                  <IconButtonStyled>
-                    <CropIcon />
-                  </IconButtonStyled>
-                </Toggle>
-              </ImageContainer>
-            ) : (
-              <EmptyImageWrap>{"이미지를 업로드 해주세요"}</EmptyImageWrap>
-            )}
-          </label>
-        </ImageWrap>
-        <ImageButton id="next" onClick={nextImg} visible={!hiddenNext}>
-          <ArrowForwardIosIcon />
-        </ImageButton>
-
-        <UploadButton>
-          <input
-            type={"file"}
-            onChange={handleAddImages}
-            id={"upload_file"}
-            multiple
+      <ContentWrap>
+        {/*우선 순위 보류*/}
+        {/*<Toggle onClick={handleFeatImage}>*/}
+        {/*  <IconButtonStyled>*/}
+        {/*    <CropIcon />*/}
+        {/*  </IconButtonStyled>*/}
+        {/*</Toggle>*/}
+        <PostHeader>
+          <StyledAvatar src={profile} alt="Profile" />
+          <PostHeaderText>{id}</PostHeaderText>
+        </PostHeader>
+        <TextWrap>
+          <TextArea
+            placeholder="문구 입력 ... "
+            value={text}
+            onChange={handleChangeText}
           />
-        </UploadButton>
-      </ImageGalleryWrap>
-      <TextWrap>
-        <TagWrap placeholder="문구 입력 ... " id="text_area"></TagWrap>
-      </TextWrap>
+        </TextWrap>
+        {text.length > 0 && <HintMessage>{`${text.length}글자`}</HintMessage>}
+      </ContentWrap>
     </Container>
   );
 }

@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   differenceInDays,
   differenceInHours,
   differenceInMinutes,
 } from "date-fns";
-import { Pagination } from "swiper";
 
 import CommentModal from "../CommentModal";
+import ImageGallery from "../ImageGallery";
 
 import {
   Circle,
@@ -15,16 +15,14 @@ import {
   Content,
   ContentText,
   ContentWrap,
-  CurImage,
   Heart,
-  ImageGalleryWrap,
+  ImageWrap,
+  Menu,
   NotiWrap,
   PostDate,
   PostHeader,
   PostHeaderText,
   StyledAvatar,
-  SwiperSlideStyled,
-  SwiperStyled,
   TextStyled,
   TextWrap,
 } from "./styles";
@@ -222,23 +220,11 @@ function PostContent({ id }: Props): React.ReactElement {
               <PostHeaderText>{postData.user_id}</PostHeaderText>
               <Circle>{"•"}</Circle>
               <PostDate>{TimeAgo(postData.published_at)}</PostDate>
+              <Menu></Menu>
             </PostHeader>
-            <ImageGalleryWrap>
-              <SwiperStyled
-                pagination={{
-                  dynamicBullets: true,
-                  clickable: true,
-                }}
-                modules={[Pagination]}
-                className="mySwiper"
-              >
-                {postData.post_list?.map((img, index) => (
-                  <SwiperSlideStyled key={index}>
-                    <CurImage src={img} alt={`Image ${img}`} />
-                  </SwiperSlideStyled>
-                ))}
-              </SwiperStyled>
-            </ImageGalleryWrap>
+            <ImageWrap>
+              <ImageGallery img_list={postData.post_list} />
+            </ImageWrap>
 
             <NotiWrap>
               <Heart

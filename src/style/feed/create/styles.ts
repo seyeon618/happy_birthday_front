@@ -1,12 +1,16 @@
+import { Avatar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 
 export const Container = styled("div")`
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 export const Header = styled("div")`
-  height: 50px;
+  height: 100px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -49,17 +53,24 @@ export const ImageButton = styled("button")<{ visible: boolean }>`
   flex-grow: 1;
 `;
 
-export const ImageWrap = styled("div")`
-  width: 300px;
+export const ContentWrap = styled("div")`
+  width: 90%;
   height: 100%;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: auto;
+`;
 
+export const ImageWrap = styled("div")`
+  display: flex;
+  justify-content: center;
+  margin: 35px 0;
+  height: 100%;
   label {
-    margin: auto auto 35px;
     width: 100%;
-    height: 70%;
+    height: 100%;
   }
 `;
 
@@ -115,13 +126,44 @@ export const UploadButton = styled("div")`
   }
 `;
 
+export const PostHeader = styled("div")`
+  width: 100%;
+  height: 60px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+export const StyledAvatar = styled(Avatar)`
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  margin: 15px 15px 15px 0px;
+`;
+
+export const PostHeaderText = styled("div")`
+  font-family: NotoSans, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+`;
+
 export const TextWrap = styled("div")`
   display: flex;
   justify-content: center;
 `;
 
-export const TagWrap = styled("textarea")`
-  width: 300px;
-  height: 100px;
+export const TextArea = styled("textarea")`
+  width: 100%;
+  height: 150px;
+  border: none;
   font-family: NotoSans, sans-serif;
+`;
+
+export const HintMessage = styled("div")`
+  font-family: NotoSans, sans-serif;
+  font-size: 13px;
+  color: #999999;
+  text-align: end;
 `;
