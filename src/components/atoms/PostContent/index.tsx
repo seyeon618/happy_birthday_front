@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import {
   differenceInDays,
@@ -35,6 +36,7 @@ interface Props {
 }
 
 function PostContent({ id }: Props): React.ReactElement {
+  const router = useRouter();
   const [posts, setPosts] = useState([]);
   const [likeList, setLikeList] = useState<Record<number, boolean>>({});
 
@@ -218,6 +220,10 @@ function PostContent({ id }: Props): React.ReactElement {
       });
   };
 
+  const handleEdit = () => {
+    router.push(`/feed/edit`);
+  };
+
   return (
     <ContentWrap>
       {posts
@@ -237,6 +243,7 @@ function PostContent({ id }: Props): React.ReactElement {
                 <Menu
                   post_id={postData.id}
                   handleClickDelete={() => handleClickDelete(postData.id)}
+                  handleEdit={handleEdit}
                 />
               )}
             </PostHeader>

@@ -23,16 +23,16 @@ import {
   TextWrap,
   Toggle,
   UploadButton,
-} from "../../../style/feed/create/styles";
+} from "../../../style/feed/styles";
 
-function Create(): React.ReactElement {
+function Feed(): React.ReactElement {
   const [id, setId] = useState(null);
   const [profile, setProfile] = useState("");
   const [postId, setPostId] = useState(null);
   const [curImgIdx, setCurImgIdx] = useState(-1);
   const [previewImages, setPreviewImages] = useState([]);
   const [previewImageUrl, setPreviewImageUrl] = useState([]);
-  const [isFeatImage, setIsFeatImage] = useState(false);
+  // const [isFeatImage, setIsFeatImage] = useState(false);
   const [text, setText] = useState("");
 
   const router = useRouter();
@@ -187,4 +187,4 @@ function Create(): React.ReactElement {
   );
 }
 
-export default Create;
+export default Feed;

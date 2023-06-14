@@ -21,9 +21,10 @@ const ITEM_HEIGHT = 48;
 interface Props {
   post_id: number;
   handleClickDelete: (postId: number) => void;
+  handleEdit: () => void;
 }
 
-function MenuComp({ post_id, handleClickDelete }: Props) {
+function MenuComp({ post_id, handleClickDelete, handleEdit }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -31,7 +32,11 @@ function MenuComp({ post_id, handleClickDelete }: Props) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = (e) => {
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = (e) => {
     setAnchorEl(null);
     if (e.target.textContent === "삭제") {
       confirmAlert({
@@ -61,6 +66,11 @@ function MenuComp({ post_id, handleClickDelete }: Props) {
     }
   };
 
+  const handleClickEdit = () => {
+    setAnchorEl(null);
+    handleEdit();
+  };
+
   return (
     <MenuWrap>
       <IconButton
@@ -88,11 +98,11 @@ function MenuComp({ post_id, handleClickDelete }: Props) {
           },
         }}
       >
-        <StyledMenuItem onClick={handleClose} className={"emphasis"}>
+        <StyledMenuItem onClick={handleDelete} className={"emphasis"}>
           {"삭제"}
         </StyledMenuItem>
         <Divider />
-        <StyledMenuItem onClick={handleClose}>{"수정"}</StyledMenuItem>
+        <StyledMenuItem onClick={handleClickEdit}>{"수정"}</StyledMenuItem>
       </Menu>
     </MenuWrap>
   );
