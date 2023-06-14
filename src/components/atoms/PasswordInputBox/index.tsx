@@ -31,12 +31,17 @@ function PasswordInputBox({
     event.preventDefault();
   };
 
+  const disableZoomIn = (event) => {
+    event.target.scrollIntoView();
+  };
+
   return (
     <InputFormWrap>
       <InputBox>
         <OutlinedInput
           id="outlined-adornment-password"
           type={showPassword ? "text" : "password"}
+          onFocus={disableZoomIn}
           endAdornment={
             text.length >= 1 && (
               <InputAdornment position="end">

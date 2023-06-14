@@ -16,12 +16,17 @@ function SignInputBox({ label, setText, setState }: Props): React.ReactElement {
     setState(event.target.value.length >= 1);
   };
 
+  const disableZoomIn = (event) => {
+    event.target.scrollIntoView();
+  };
+
   return (
     <InputFormWrap>
       <InputBox>
         <OutlinedInput
           placeholder={label}
           onChange={handleChange}
+          onFocus={disableZoomIn}
           autoComplete={""}
         />
       </InputBox>
