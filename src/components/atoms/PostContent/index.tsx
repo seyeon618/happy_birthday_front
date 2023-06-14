@@ -8,6 +8,7 @@ import {
 
 import CommentModal from "../CommentModal";
 import ImageGallery from "../ImageGallery";
+import Menu from "../Menu";
 
 import {
   Circle,
@@ -17,7 +18,6 @@ import {
   ContentWrap,
   Heart,
   ImageWrap,
-  Menu,
   NotiWrap,
   PostDate,
   PostHeader,
@@ -205,6 +205,19 @@ function PostContent({ id }: Props): React.ReactElement {
     return <>{daysDifference}일 전</>;
   };
 
+  const handleClickDelete = (post_id: number) => {
+    axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_BASEURL}/posts/user/delete?user_id=${id}&post_id=${post_id}`
+      )
+      .then((res) => {
+        getPost();
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+
   return (
     <ContentWrap>
       {posts
@@ -220,7 +233,12 @@ function PostContent({ id }: Props): React.ReactElement {
               <PostHeaderText>{postData.user_id}</PostHeaderText>
               <Circle>{"•"}</Circle>
               <PostDate>{TimeAgo(postData.published_at)}</PostDate>
-              <Menu></Menu>
+              {postData.user_id === id && (
+                <Menu
+                  post_id={postData.id}
+                  handleClickDelete={() => handleClickDelete(postData.id)}
+                />
+              )}
             </PostHeader>
             <ImageWrap>
               <ImageGallery img_list={postData.post_list} />
