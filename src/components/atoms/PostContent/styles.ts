@@ -58,6 +58,7 @@ export const ImageGalleryWrap = styled("div")`
 
   display: flex;
   justify-content: center;
+  z-index: 0;
 `;
 
 export const ImageWrap = styled("div")`
