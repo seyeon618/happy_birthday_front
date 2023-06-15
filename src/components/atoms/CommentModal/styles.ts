@@ -5,6 +5,10 @@ import { styled } from "@mui/material/styles";
 import ClampLines from "react-clamp-lines";
 import Sheet from "react-modal-sheet";
 
+export const StyledSheet = styled(Sheet)`
+  z-index: 10 !important;
+`;
+
 export const SheetContainer = styled(Sheet.Container)`
   height: 70% !important;
   display: flex;

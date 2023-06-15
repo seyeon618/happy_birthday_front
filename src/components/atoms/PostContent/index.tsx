@@ -54,7 +54,7 @@ function PostContent({ id }: Props): React.ReactElement {
 
   const handleClose = () => setOpen(false);
 
-  const handleAddComment = (newComment) => {
+  const handleUpdateComment = (newComment) => {
     setSelectPostComments((prevComments) => [...prevComments, newComment]);
   };
 
@@ -146,6 +146,7 @@ function PostContent({ id }: Props): React.ReactElement {
     if (id) {
       getPost();
     }
+    console.log("effect");
   }, [id, selectPostComments]);
 
   const likePost = (user_id: string, post_id: number, liked: boolean) => {
@@ -207,9 +208,7 @@ function PostContent({ id }: Props): React.ReactElement {
     return <>{daysDifference}일 전</>;
   };
 
-  const handleClickDelete = (post_id: number) => {
-    console.log(id);
-    console.log(post_id);
+  const handleClickDeletePost = (post_id: number) => {
     axios
       .delete(
         `${process.env.NEXT_PUBLIC_BASEURL}/posts/user/delete?user_id=${id}&post_id=${post_id}`
@@ -244,7 +243,7 @@ function PostContent({ id }: Props): React.ReactElement {
               {postData.user_id === id && (
                 <Menu
                   post_id={postData.id}
-                  handleClickDelete={() => handleClickDelete(postData.id)}
+                  handleClickDelete={() => handleClickDeletePost(postData.id)}
                   handleEdit={() => handleEdit(postData.id)}
                 />
               )}
@@ -296,7 +295,7 @@ function PostContent({ id }: Props): React.ReactElement {
         comment_list={selectPostComments}
         timeAgo={TimeAgo}
         parseDateString={parseDateString}
-        handleAddComment={handleAddComment}
+        handleUpdateComment={handleUpdateComment}
       />
     </ContentWrap>
   );
