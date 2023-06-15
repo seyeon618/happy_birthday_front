@@ -54,8 +54,17 @@ function PostContent({ id }: Props): React.ReactElement {
 
   const handleClose = () => setOpen(false);
 
-  const handleUpdateComment = (newComment) => {
+  const handleAddComment = (newComment) => {
     setSelectPostComments((prevComments) => [...prevComments, newComment]);
+  };
+
+  const handleDeleteComment = (deleteComment) => {
+    setSelectPostComments((prevComments) => {
+      const updatedComments = prevComments.filter(
+        (comment) => comment.id !== deleteComment.id
+      );
+      return updatedComments;
+    });
   };
 
   const getPost = () => {
@@ -146,7 +155,6 @@ function PostContent({ id }: Props): React.ReactElement {
     if (id) {
       getPost();
     }
-    console.log("effect");
   }, [id, selectPostComments]);
 
   const likePost = (user_id: string, post_id: number, liked: boolean) => {
@@ -295,7 +303,8 @@ function PostContent({ id }: Props): React.ReactElement {
         comment_list={selectPostComments}
         timeAgo={TimeAgo}
         parseDateString={parseDateString}
-        handleUpdateComment={handleUpdateComment}
+        handleAddComment={handleAddComment}
+        handleDeleteComment={handleDeleteComment}
       />
     </ContentWrap>
   );

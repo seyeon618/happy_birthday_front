@@ -39,7 +39,8 @@ interface Props {
   comment_list: any;
   timeAgo: (dateString: string) => JSX.Element;
   parseDateString: (dateString: string) => Date;
-  handleUpdateComment: (newComment: any) => void;
+  handleAddComment: (newComment: any) => void;
+  handleDeleteComment: (deleteComment: any) => void;
 }
 
 function CommentModal({
@@ -50,7 +51,8 @@ function CommentModal({
   comment_list,
   timeAgo,
   parseDateString,
-  handleUpdateComment,
+  handleAddComment,
+  handleDeleteComment,
 }: Props): React.ReactElement {
   const [profile, setProfile] = useState([]);
   const [myProfile, setMyProfile] = useState("");
@@ -121,7 +123,7 @@ function CommentModal({
         data
       )
       .then((res) => {
-        handleUpdateComment(res.data);
+        handleAddComment(res.data);
         setComment("");
       });
   };
@@ -132,7 +134,7 @@ function CommentModal({
         `${process.env.NEXT_PUBLIC_BASEURL}/comments/delete?comment_id=${commentId}`
       )
       .then((res) => {
-        handleUpdateComment(res.data);
+        handleDeleteComment(res.data);
         setComment("");
       })
       .catch((error) => {
@@ -148,19 +150,19 @@ function CommentModal({
     const endTime = new Date().getTime();
     const pressDuration = (endTime - startTime) / 1000;
 
-    // if (pressDuration >= 1.5) {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <ConfirmDeleteAlert
-            id={commentId}
-            handleClickDelete={() => handleClickDeleteComment(commentId)}
-            handleClose={onClose}
-          />
-        );
-      },
-    });
-    //}
+    if (pressDuration >= 1.5) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <ConfirmDeleteAlert
+              id={commentId}
+              handleClickDelete={() => handleClickDeleteComment(commentId)}
+              handleClose={onClose}
+            />
+          );
+        },
+      });
+    }
 
     // 이미 호출한 경우, 다음에 호출되지 않도록 startTime을 초기화
     setStartTime(null);
