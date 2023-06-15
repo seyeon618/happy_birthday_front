@@ -58,6 +58,15 @@ function PostContent({ id }: Props): React.ReactElement {
     setSelectPostComments((prevComments) => [...prevComments, newComment]);
   };
 
+  const handleDeleteComment = (deleteComment) => {
+    setSelectPostComments((prevComments) => {
+      const updatedComments = prevComments.filter(
+        (comment) => comment.id !== deleteComment.id
+      );
+      return updatedComments;
+    });
+  };
+
   const getPost = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_BASEURL}/posts/list`)
@@ -65,7 +74,7 @@ function PostContent({ id }: Props): React.ReactElement {
         const promises = [];
         const postData = [];
         for (let i = 0; i < res.data.length; i++) {
-          // private 이거나, admin이 작성한 게시물은 표시하지 않음
+          // private 이거나, 영서 계정으로 작성한 게시물은 표시하지 않음
           if (!res.data[i].is_private && res.data[i].user_id != "admin") {
             const user_data = {
               id: res.data[i].user_id,
@@ -146,7 +155,7 @@ function PostContent({ id }: Props): React.ReactElement {
     if (id) {
       getPost();
     }
-  }, [id]);
+  }, [id, selectPostComments]);
 
   const likePost = (user_id: string, post_id: number, liked: boolean) => {
     const data = {
@@ -207,7 +216,7 @@ function PostContent({ id }: Props): React.ReactElement {
     return <>{daysDifference}일 전</>;
   };
 
-  const handleClickDelete = (post_id: number) => {
+  const handleClickDeletePost = (post_id: number) => {
     axios
       .delete(
         `${process.env.NEXT_PUBLIC_BASEURL}/posts/user/delete?user_id=${id}&post_id=${post_id}`
@@ -242,7 +251,7 @@ function PostContent({ id }: Props): React.ReactElement {
               {postData.user_id === id && (
                 <Menu
                   post_id={postData.id}
-                  handleClickDelete={() => handleClickDelete(postData.id)}
+                  handleClickDelete={() => handleClickDeletePost(postData.id)}
                   handleEdit={() => handleEdit(postData.id)}
                 />
               )}
@@ -295,6 +304,7 @@ function PostContent({ id }: Props): React.ReactElement {
         timeAgo={TimeAgo}
         parseDateString={parseDateString}
         handleAddComment={handleAddComment}
+        handleDeleteComment={handleDeleteComment}
       />
     </ContentWrap>
   );

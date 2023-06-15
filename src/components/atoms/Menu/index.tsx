@@ -5,14 +5,9 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import { confirmAlert } from "react-confirm-alert";
 
-import {
-  AlterContainer,
-  Button,
-  GuideMessage,
-  MenuWrap,
-  MessageWrap,
-  StyledMenuItem,
-} from "./styles";
+import ConfirmDeleteAlert from "../ConfirmDeleteAlert";
+
+import { MenuWrap, StyledMenuItem } from "./styles";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -20,7 +15,7 @@ const ITEM_HEIGHT = 48;
 
 interface Props {
   post_id: number;
-  handleClickDelete: (postId: number) => void;
+  handleClickDelete: (id: number) => void;
   handleEdit: () => void;
 }
 
@@ -42,24 +37,11 @@ function MenuComp({ post_id, handleClickDelete, handleEdit }: Props) {
       confirmAlert({
         customUI: ({ onClose }) => {
           return (
-            <AlterContainer>
-              <MessageWrap>
-                <GuideMessage className={"emphasis"}>
-                  게시물을 삭제하시겠어요?
-                </GuideMessage>
-                <GuideMessage>영구 삭제되니 신중히 선택해주세요!</GuideMessage>
-              </MessageWrap>
-              <Button
-                className={"emphasis"}
-                onClick={() => {
-                  handleClickDelete(post_id);
-                  onClose();
-                }}
-              >
-                삭제
-              </Button>
-              <Button onClick={onClose}>취소</Button>
-            </AlterContainer>
+            <ConfirmDeleteAlert
+              id={post_id}
+              handleClickDelete={handleClickDelete}
+              handleClose={onClose}
+            />
           );
         },
       });

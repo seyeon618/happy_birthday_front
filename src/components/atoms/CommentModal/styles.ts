@@ -5,6 +5,10 @@ import { styled } from "@mui/material/styles";
 import ClampLines from "react-clamp-lines";
 import Sheet from "react-modal-sheet";
 
+export const StyledSheet = styled(Sheet)`
+  z-index: 10 !important;
+`;
+
 export const SheetContainer = styled(Sheet.Container)`
   height: 70% !important;
   display: flex;
@@ -92,6 +96,12 @@ export const ClampText = styled(ClampLines)`
     padding: 0;
     font-family: NotoSans, sans-serif;
   }
+`;
+
+export const DeleteComment = styled("div")`
+  display: flex;
+  margin-left: auto;
+  margin-right: 15px;
 `;
 
 export const Footer = styled("div")`

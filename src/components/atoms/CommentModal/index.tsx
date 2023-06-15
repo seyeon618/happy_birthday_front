@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+import ClearIcon from "@mui/icons-material/Clear";
 import { Divider } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import axios from "axios";
+import { confirmAlert } from "react-confirm-alert";
 import Sheet from "react-modal-sheet";
+
+import ConfirmDeleteAlert from "../ConfirmDeleteAlert";
 
 import {
   ClampText,
@@ -14,6 +18,7 @@ import {
   CommentUploadButton,
   CommentWrap,
   ContentWrap,
+  DeleteComment,
   EmptyContentWrap,
   EmptyGuideMessage,
   Footer,
@@ -25,6 +30,7 @@ import {
   StyledDate,
   StyledId,
   StyledInput,
+  StyledSheet,
 } from "./styles";
 
 interface Props {
@@ -36,6 +42,7 @@ interface Props {
   timeAgo: (dateString: string) => JSX.Element;
   parseDateString: (dateString: string) => Date;
   handleAddComment: (newComment: any) => void;
+  handleDeleteComment: (deleteComment: any) => void;
 }
 
 function CommentModal({
@@ -47,6 +54,7 @@ function CommentModal({
   timeAgo,
   parseDateString,
   handleAddComment,
+  handleDeleteComment,
 }: Props): React.ReactElement {
   const [profile, setProfile] = useState([]);
   const [myProfile, setMyProfile] = useState("");
@@ -120,6 +128,34 @@ function CommentModal({
       });
   };
 
+  const handleClickDeleteComment = (commentId: number) => {
+    axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_BASEURL}/comments/delete?comment_id=${commentId}`
+      )
+      .then((res) => {
+        handleDeleteComment(res.data);
+        setComment("");
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+
+  const handleAlter = (commentId) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <ConfirmDeleteAlert
+            id={commentId}
+            handleClickDelete={() => handleClickDeleteComment(commentId)}
+            handleClose={onClose}
+          />
+        );
+      },
+    });
+  };
+
   const getComments = () => {
     return (
       <CommentContent>
@@ -147,6 +183,11 @@ function CommentModal({
                   />
                 </ContentWrap>
               </CommentContainer>
+              <DeleteComment>
+                {commentData.user_id === id && (
+                  <ClearIcon onClick={() => handleAlter(commentData.id)} />
+                )}
+              </DeleteComment>
             </CommentWrap>
           ))}
       </CommentContent>
@@ -167,7 +208,7 @@ function CommentModal({
   };
 
   return (
-    <Sheet isOpen={open} onClose={handleClose}>
+    <StyledSheet isOpen={open} onClose={handleClose}>
       <SheetContainer>
         <SheetHeader />
         <CommentHeader>{"댓글"}</CommentHeader>
@@ -199,7 +240,7 @@ function CommentModal({
       </SheetContainer>
 
       <Sheet.Backdrop />
-    </Sheet>
+    </StyledSheet>
   );
 }
 
