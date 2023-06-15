@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ClearIcon from "@mui/icons-material/Clear";
 import { Divider } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import axios from "axios";
@@ -17,6 +18,7 @@ import {
   CommentUploadButton,
   CommentWrap,
   ContentWrap,
+  DeleteComment,
   EmptyContentWrap,
   EmptyGuideMessage,
   Footer,
@@ -58,8 +60,6 @@ function CommentModal({
   const [myProfile, setMyProfile] = useState("");
 
   const [comment, setComment] = useState("");
-
-  const [startTime, setStartTime] = useState(null);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -142,30 +142,18 @@ function CommentModal({
       });
   };
 
-  const startPress = () => {
-    setStartTime(new Date().getTime());
-  };
-
-  const endPress = (commentId) => {
-    const endTime = new Date().getTime();
-    const pressDuration = (endTime - startTime) / 1000;
-
-    if (pressDuration >= 1.5) {
-      confirmAlert({
-        customUI: ({ onClose }) => {
-          return (
-            <ConfirmDeleteAlert
-              id={commentId}
-              handleClickDelete={() => handleClickDeleteComment(commentId)}
-              handleClose={onClose}
-            />
-          );
-        },
-      });
-    }
-
-    // 이미 호출한 경우, 다음에 호출되지 않도록 startTime을 초기화
-    setStartTime(null);
+  const handleAlter = (commentId) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <ConfirmDeleteAlert
+            id={commentId}
+            handleClickDelete={() => handleClickDeleteComment(commentId)}
+            handleClose={onClose}
+          />
+        );
+      },
+    });
   };
 
   const getComments = () => {
@@ -178,12 +166,7 @@ function CommentModal({
               parseDateString(a.date).getTime()
           )
           .map((commentData, index) => (
-            <CommentWrap
-              key={commentData.id}
-              onMouseDown={startPress}
-              onMouseUp={() => endPress(commentData.id)}
-              onMouseLeave={endPress}
-            >
+            <CommentWrap key={commentData.id}>
               <StyledAvatar src={profile[index]} alt="Profile" />
               <CommentContainer>
                 <CommentIDWrap>
@@ -200,6 +183,11 @@ function CommentModal({
                   />
                 </ContentWrap>
               </CommentContainer>
+              <DeleteComment>
+                {commentData.user_id === id && (
+                  <ClearIcon onClick={() => handleAlter(commentData.id)} />
+                )}
+              </DeleteComment>
             </CommentWrap>
           ))}
       </CommentContent>

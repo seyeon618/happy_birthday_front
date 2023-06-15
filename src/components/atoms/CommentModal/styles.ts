@@ -98,6 +98,12 @@ export const ClampText = styled(ClampLines)`
   }
 `;
 
+export const DeleteComment = styled("div")`
+  display: flex;
+  margin-left: auto;
+  margin-right: 15px;
+`;
+
 export const Footer = styled("div")`
   display: flex;
   flex-direction: column;
