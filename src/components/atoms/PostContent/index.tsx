@@ -146,7 +146,7 @@ function PostContent({ id }: Props): React.ReactElement {
     if (id) {
       getPost();
     }
-  }, [id]);
+  }, [id, selectPostComments]);
 
   const likePost = (user_id: string, post_id: number, liked: boolean) => {
     const data = {
@@ -208,6 +208,8 @@ function PostContent({ id }: Props): React.ReactElement {
   };
 
   const handleClickDelete = (post_id: number) => {
+    console.log(id);
+    console.log(post_id);
     axios
       .delete(
         `${process.env.NEXT_PUBLIC_BASEURL}/posts/user/delete?user_id=${id}&post_id=${post_id}`

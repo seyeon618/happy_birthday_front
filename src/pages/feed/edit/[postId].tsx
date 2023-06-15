@@ -29,7 +29,13 @@ function Feed(): React.ReactElement {
   const router = useRouter();
 
   const [id, setId] = useState(null);
+
   const { postId } = router.query;
+  let post_id: number | undefined;
+  if (typeof postId === "string") {
+    post_id = parseInt(postId);
+  }
+
   const [post, setPost] = useState([]);
   const [profile, setProfile] = useState("");
   const [curImgIdx, setCurImgIdx] = useState(-1);
@@ -39,9 +45,6 @@ function Feed(): React.ReactElement {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    console.log("edit");
-    console.log(id);
-    console.log(postId);
     const getProfile = async () => {
       const myProfilePromise = axios
         .get(
@@ -55,35 +58,37 @@ function Feed(): React.ReactElement {
 
     const getPost = async () => {
       const postPromise = axios
-        .post(
-          `{${process.env.NEXT_PUBLIC_BASEURL}/posts/get?user_id=${id}&post_id=${postId}`
-        )
+        .post(`${process.env.NEXT_PUBLIC_BASEURL}/posts/get?post_id=${post_id}`)
         .then((res) => res.data);
 
       const postData = await Promise.resolve(postPromise);
       setPost(postData);
+      setText(postData.content);
     };
 
     const getPreviewImg = async () => {
       const imgPromise = axios
-        .post(
-          `{${process.env.NEXT_PUBLIC_BASEURL}/posts/image/list?post_id=${postId}`
+        .get(
+          `${process.env.NEXT_PUBLIC_BASEURL}/posts/image/list?post_id=${post_id}`
         )
         .then((res) => res.data);
 
       const imgData = await Promise.resolve(imgPromise);
 
-      const imgUrl = [];
-      imgData.map((userData) => imgUrl.push(userData.file_path));
-      setPreviewImageUrl(imgData);
-      console.log(imgData);
+      imgData.map((userData) => previewImageUrl.push(userData.file_path));
+
+      if (previewImageUrl.length > 0) {
+        setCurImgIdx(0);
+      } else {
+        setCurImgIdx(-1);
+      }
     };
 
     if (id) {
       getProfile();
     }
 
-    if (id && postId) {
+    if (id && post_id) {
       getPost();
       getPreviewImg();
     }
@@ -126,17 +131,17 @@ function Feed(): React.ReactElement {
 
   const handleShare = () => {
     const data = {
-      writer: {
-        id: id,
+      post_get_info: {
+        id: post_id,
       },
-      post: {
+      updated_post: {
         content: text,
         published_at: getCurrentDate(),
         is_private: false,
       },
     };
     axios
-      .post(`${process.env.NEXT_PUBLIC_BASEURL}/posts/create`, data)
+      .put(`${process.env.NEXT_PUBLIC_BASEURL}/posts/update`, data)
       .then((res) => {
         const formData = new FormData();
         for (let i = 0; i < previewImages.length; i++) {
