@@ -87,7 +87,7 @@ function Home(): React.ReactElement {
           <SearchIcon onClick={() => onClickIcon("/home")} />
           <PostAddIcon onClick={() => onClickIcon("/feed/create")} />
           <ReelsIcon onClick={() => onClickIcon("/home")} />
-          <ProfileIcon onClick={() => onClickIcon("/profile")} />
+          <ProfileIcon onClick={() => onClickIcon("/profile/test1")} />
         </Footer>
       </FooterWrap>
     </Container>

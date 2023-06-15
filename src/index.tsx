@@ -10,7 +10,7 @@ import Feed from "./pages/feed/create";
 import EditFeed from "./pages/feed/edit/[postId]";
 import Home from "./pages/home/index";
 import Root from "./pages/index";
-import Profile from "./pages/profile/index";
+import Profile from "./pages/profile/[userId]";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorkerRegistration";
 
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     element: <EditFeed />,
   },
   {
-    path: "/profile",
+    path: "/profile/:userId",
     element: <Profile />,
   },
 ]);

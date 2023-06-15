@@ -7,6 +7,7 @@ export const WholeWrap = styled("div")`
   flex-grow: 1;
   overflow: hidden;
 `;
+
 export const CardWrap = styled("div")`
   align-items: stretch;
   box-sizing: border-box;
