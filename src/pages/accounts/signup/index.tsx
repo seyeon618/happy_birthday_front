@@ -140,7 +140,7 @@ function SignUp(): React.ReactElement {
       default:
         return (
           <>
-            <Title>Instagram</Title>
+            <Title>Happy Birthday</Title>
             <GuideMessage>
               영서의 생일을 축하하기 위해 만든 서비스 입니다.
             </GuideMessage>
@@ -189,7 +189,7 @@ function SignUp(): React.ReactElement {
       case pageState.add_profile:
         return (
           <>
-            <Title>Instagram</Title>
+            <Title>Happy Birthday</Title>
             <GuideMessage>프로필 사진을 등록해주세요</GuideMessage>
             <label htmlFor={"upload_file"}>
               <AvatarWrap>

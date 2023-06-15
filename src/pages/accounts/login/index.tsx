@@ -90,7 +90,7 @@ function Login({ isShowPicture }: Props): React.ReactElement {
             )}
             <InputFormWrap>
               <InputFormTop>
-                <Title>Instagram</Title>
+                <Title>Happy Birthday</Title>
                 <form>
                   <Input>
                     <SignInputBox
