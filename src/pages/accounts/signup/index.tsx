@@ -107,11 +107,11 @@ function SignUp(): React.ReactElement {
             .catch((error) => {
               console.log(error.responsee);
             });
-          router.push(`/home`);
         })
         .catch((error) => {
           console.log(error.response);
         });
+      router.push(`/home`);
     }
   };
 
@@ -210,8 +210,7 @@ function SignUp(): React.ReactElement {
             <MessageWrap>
               <SubMessage>
                 게시물 및 댓글에 표시할 본인의 프로필을 업로드 해주세요. 업로드
-                하지 않을 경우 가입이 진행되지 않습니다! 꼭 본인 사진이 아니어도
-                괜찮으니 업로드 해주세요:)
+                하지 않을 경우 기본 프로필로 표시됩니다:)
               </SubMessage>
             </MessageWrap>
             <AccountButton
