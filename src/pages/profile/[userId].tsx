@@ -158,7 +158,7 @@ function Profile(): React.ReactElement {
           </ContentWrap>
         </ProfileContainer>
       </WholeWrap>
-      <FooterNavi />
+      <FooterNavi id={id} />
     </div>
   );
 }

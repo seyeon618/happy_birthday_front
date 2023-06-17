@@ -80,7 +80,7 @@ function Home(): React.ReactElement {
       <Divider light />
       <PostContent id={id} />
       <Divider light />
-      <FooterNavi />
+      <FooterNavi id={id} />
     </Container>
   );
 }

@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Modal from "@mui/material/Modal";
 import { styled } from "@mui/material/styles";
 
 export const FooterWrap = styled("div")`
@@ -49,4 +51,40 @@ export const ProfileIcon = styled("div")`
   background-size: 23px;
   width: 23px;
   height: 23px;
+`;
+
+export const ModalStyled = styled(Modal)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ModalContainer = styled("div")`
+  background-color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  width: 300px;
+  height: 200px;
+`;
+
+export const Title = styled("div")`
+  font-family: NotoSans, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+`;
+
+export const Text = styled("div")`
+  font-family: NotoSans, sans-serif;
+  font-size: 12px;
+`;
+
+export const CatImg = styled(Image)`
+  width: 200px;
+  height: 100px;
+  margin: auto;
 `;

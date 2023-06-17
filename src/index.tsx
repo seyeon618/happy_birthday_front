@@ -11,6 +11,7 @@ import EditFeed from "./pages/feed/edit/[postId]";
 import Home from "./pages/home/index";
 import Root from "./pages/index";
 import Profile from "./pages/profile/[userId]";
+import Reels from "./pages/reels";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorkerRegistration";
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/feed/edit/:postId",
     element: <EditFeed />,
+  },
+  {
+    path: "/reels",
+    element: <Reels />,
   },
   {
     path: "/profile/:userId",
