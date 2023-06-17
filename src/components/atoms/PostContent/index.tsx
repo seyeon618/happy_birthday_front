@@ -75,7 +75,7 @@ function PostContent({ id }: Props): React.ReactElement {
         const postData = [];
         for (let i = 0; i < res.data.length; i++) {
           // private 이거나, 영서 계정으로 작성한 게시물은 표시하지 않음
-          if (!res.data[i].is_private && res.data[i].user_id != "admin") {
+          if (!res.data[i].is_private && res.data[i].user_id != "0000.seo_") {
             const user_data = {
               id: res.data[i].user_id,
             };
