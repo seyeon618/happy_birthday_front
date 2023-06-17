@@ -114,8 +114,12 @@ export const Content = styled("div")``;
 
 export const StyledImageList = styled(ImageList)`
   width: 100%;
+  gap: 0px;
+  aspect-ratio: 3/1;
 `;
 
 export const StyledImageListItem = styled(ImageListItem)`
-  aspect-ratio: 1/1;
+  img {
+    aspect-ratio: 1/1;
+  }
 `;

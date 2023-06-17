@@ -5,6 +5,7 @@ export const CurImage = styled("img")`
   width: 100%;
   height: 100%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
 `;
 
 export const ImageGalleryWrap = styled("div")`
@@ -14,8 +15,6 @@ export const ImageGalleryWrap = styled("div")`
   display: flex;
   justify-content: center;
   z-index: 0;
-
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 `;
 
 export const SwiperStyled = styled(Swiper)`

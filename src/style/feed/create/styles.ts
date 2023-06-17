@@ -67,7 +67,8 @@ export const ImageWrap = styled("div")`
   display: flex;
   justify-content: center;
   margin: 35px 0;
-  height: 100%;
+  height: 50%;
+  width: 100%;
   label {
     width: 100%;
     height: 100%;
@@ -76,13 +77,6 @@ export const ImageWrap = styled("div")`
 
 export const ImageContainer = styled("div")`
   display: inline;
-`;
-
-export const CurImage = styled("img")<{ isFeat: boolean }>`
-  width: 100%;
-  height: 100%;
-  object-fit: ${(props) => (props.isFeat ? "cover" : "contain")};
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 `;
 
 export const Toggle = styled("div")`
@@ -106,7 +100,6 @@ export const EmptyImageWrap = styled("div")`
   align-items: center;
 
   font-family: NotoSans, sans-serif;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 `;
 
 export const UploadButton = styled("div")`
