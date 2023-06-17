@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import Alert from "@mui/material/Alert";
 import axios from "axios";
 import FormData from "form-data";
 
@@ -33,6 +34,7 @@ function Feed(): React.ReactElement {
   const [previewImageUrl, setPreviewImageUrl] = useState([]);
   // const [isFeatImage, setIsFeatImage] = useState(false);
   const [text, setText] = useState("");
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
@@ -89,6 +91,17 @@ function Feed(): React.ReactElement {
   };
 
   const handleShare = () => {
+    if (previewImages.length <= 0) {
+      setError("이미지를 업로드 해주세요!");
+      return;
+    }
+
+    if (text.length <= 0) {
+      setError("메시지를 작성해주세요!");
+      return;
+    }
+
+    setError("");
     const data = {
       writer: {
         id: id,
@@ -181,6 +194,7 @@ function Feed(): React.ReactElement {
           />
         </TextWrap>
         {text.length > 0 && <HintMessage>{`${text.length}글자`}</HintMessage>}
+        {error && <Alert severity="error">{error}</Alert>}
       </ContentWrap>
     </Container>
   );
