@@ -1,10 +1,9 @@
 import { styled } from "@mui/material/styles";
-import { Swiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 export const CurImage = styled("img")`
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   object-fit: contain;
 `;
 
@@ -20,13 +19,9 @@ export const ImageGalleryWrap = styled("div")`
 export const SwiperStyled = styled(Swiper)`
   display: flex;
   align-items: center;
+`;
 
-  &.swiper {
-    width: 100%;
-    height: 100%;
-  }
-
-  .swiper-button-next {
-    color: #d9d9d9;
-  }
+export const SwiperSlideStyled = styled(SwiperSlide)`
+  width: 100%;
+  height: 100%;
 `;

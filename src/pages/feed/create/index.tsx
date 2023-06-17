@@ -152,6 +152,7 @@ function Feed(): React.ReactElement {
           )}
         </label>
       </ImageWrap>
+
       <UploadButton>
         <input
           type={"file"}

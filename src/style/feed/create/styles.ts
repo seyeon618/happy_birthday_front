@@ -6,7 +6,7 @@ export const Container = styled("div")`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
 export const Header = styled("div")`
@@ -66,17 +66,13 @@ export const ContentWrap = styled("div")`
 export const ImageWrap = styled("div")`
   display: flex;
   justify-content: center;
-  margin: 35px 0;
-  height: 50%;
   width: 100%;
+  height: 50%;
+  margin: 30px 0;
   label {
     width: 100%;
     height: 100%;
   }
-`;
-
-export const ImageContainer = styled("div")`
-  display: inline;
 `;
 
 export const Toggle = styled("div")`

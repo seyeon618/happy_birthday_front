@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Divider } from "@mui/material";
 import axios from "axios";
 
@@ -18,6 +19,8 @@ import {
 } from "../../style/home/styles";
 
 function Home(): React.ReactElement {
+  const router = useRouter();
+
   const [id, setId] = useState(null);
   const [user, setUser] = useState([]);
 
@@ -46,6 +49,10 @@ function Home(): React.ReactElement {
     getUsers();
   }, [id]);
 
+  const handleProfile = (userId: string) => {
+    router.push(`/profile/${userId}`);
+  };
+
   return (
     <Container>
       <Auth setId={setId} />
@@ -59,7 +66,11 @@ function Home(): React.ReactElement {
           <StyledGrid key={userData.id} container className="container">
             <StyledGrid item xs={12} className="avatar">
               <Circle>
-                <StyledAvatar src={userData.file_path} alt="Profile" />
+                <StyledAvatar
+                  src={userData.file_path}
+                  alt="Profile"
+                  onClick={() => handleProfile(userData.id)}
+                />
               </Circle>
               <IDText>{userData.id}</IDText>
             </StyledGrid>

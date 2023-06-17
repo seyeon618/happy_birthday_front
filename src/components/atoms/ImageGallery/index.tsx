@@ -1,8 +1,14 @@
 import React from "react";
 import { Pagination } from "swiper";
-import { SwiperSlide } from "swiper/react";
 
-import { CurImage, ImageGalleryWrap, SwiperStyled } from "./styles";
+import {
+  CurImage,
+  ImageGalleryWrap,
+  SwiperSlideStyled,
+  SwiperStyled,
+} from "./styles";
+
+import "swiper/swiper.min.css";
 
 interface Props {
   img_list: string[];
@@ -20,9 +26,9 @@ function ImageGallery({ img_list }: Props) {
         className="mySwiper"
       >
         {img_list?.map((img, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlideStyled key={index}>
             <CurImage src={img} alt={`Image ${img}`} />
-          </SwiperSlide>
+          </SwiperSlideStyled>
         ))}
       </SwiperStyled>
     </ImageGalleryWrap>
