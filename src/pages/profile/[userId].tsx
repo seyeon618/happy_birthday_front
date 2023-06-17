@@ -4,6 +4,7 @@ import Divider from "@mui/material/Divider";
 import axios from "axios";
 
 import Dot from "../../../public/Image/dots.png";
+import PostModal from "../../components/atoms/PostModal";
 import Auth from "../../components/common/Auth";
 import { WholeWrap } from "../../components/common/Card/styles";
 import FooterNavi from "../../components/common/FooterNavigator";
@@ -35,6 +36,10 @@ function Profile(): React.ReactElement {
   const [user, setUser] = useState([]);
   const [profile, setProfile] = useState("");
   const [posts, setPost] = useState([]);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -151,6 +156,16 @@ function Profile(): React.ReactElement {
                     srcSet={`${postData.img_list[0]}?fit=crop&auto=format&dpr=2 2x`}
                     alt={"post"}
                     loading="lazy"
+                    onClick={handleOpen}
+                  />
+                  <PostModal
+                    id={postData.id}
+                    profile_path={profile}
+                    user_id={id}
+                    published_at={postData.published_at}
+                    post_list={postData.img_list}
+                    open={open}
+                    handleClose={handleClose}
                   />
                 </StyledImageListItem>
               ))}
