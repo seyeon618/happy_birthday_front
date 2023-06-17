@@ -9,13 +9,17 @@ import ImageGallery from "../ImageGallery";
 
 import {
   Circle,
+  ClampText,
+  ContentText,
   ImageWrap,
+  ModalContainer,
+  ModalStyled,
   PostDate,
   PostHeader,
   PostHeaderText,
   StyledAvatar,
+  TextStyled,
 } from "./styles";
-import { ModalContainer, ModalStyled } from "./styles";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -26,6 +30,7 @@ interface Props {
   user_id: string;
   published_at: string;
   post_list: string[];
+  content: string;
   open: boolean;
   handleClose: () => void;
 }
@@ -36,6 +41,7 @@ function PostModal({
   user_id,
   published_at,
   post_list,
+  content,
   open,
   handleClose,
 }: Props): React.ReactElement {
@@ -83,6 +89,18 @@ function PostModal({
         <ImageWrap>
           <ImageGallery img_list={post_list} />
         </ImageWrap>
+        <TextStyled>
+          <ContentText>
+            <a>{user_id}</a>
+            <ClampText
+              text={content}
+              id="customId"
+              lines={1}
+              moreText={"더 보기"}
+              lessText={"접기"}
+            />
+          </ContentText>
+        </TextStyled>
       </ModalContainer>
     </ModalStyled>
   );

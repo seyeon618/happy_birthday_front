@@ -164,6 +164,7 @@ function Profile(): React.ReactElement {
                     user_id={id}
                     published_at={postData.published_at}
                     post_list={postData.img_list}
+                    content={postData.content}
                     open={open}
                     handleClose={handleClose}
                   />
