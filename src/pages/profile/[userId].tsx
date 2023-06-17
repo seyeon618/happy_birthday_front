@@ -6,7 +6,7 @@ import axios from "axios";
 import Dot from "../../../public/Image/dots.png";
 import Auth from "../../components/common/Auth";
 import { WholeWrap } from "../../components/common/Card/styles";
-import Footer from "../../components/common/Footer";
+import FooterNavi from "../../components/common/FooterNavigator";
 import {
   AvaterWrap,
   Circle,
@@ -33,6 +33,7 @@ function Profile(): React.ReactElement {
   const { userId } = router.query; // 보고있는 user
   const [id, setId] = useState(null); // 접속중인 user
   const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState("");
   const [posts, setPost] = useState([]);
 
   useEffect(() => {
@@ -44,6 +45,17 @@ function Profile(): React.ReactElement {
         .post(`${process.env.NEXT_PUBLIC_BASEURL}/accounts/user`, data)
         .then((res) => {
           setUser(res.data);
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const getProfile = async () => {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BASEURL}/accounts/profile?user_id=${userId}`
+        )
+        .then((res) => {
+          setProfile(res.data);
         })
         .catch((error) => console.log(error));
     };
@@ -88,6 +100,7 @@ function Profile(): React.ReactElement {
 
     if (userId) {
       getUser();
+      getProfile();
       getPost();
     }
   }, [id]);
@@ -102,7 +115,7 @@ function Profile(): React.ReactElement {
           <ProfileWrap>
             <AvaterWrap>
               <Circle>
-                <StyledAvatar src="/Image/youngseo.png" alt="Profile" />
+                <StyledAvatar src={profile} alt="Profile" />
               </Circle>
             </AvaterWrap>
             <InfoWrap>
@@ -145,7 +158,7 @@ function Profile(): React.ReactElement {
           </ContentWrap>
         </ProfileContainer>
       </WholeWrap>
-      <Footer />
+      <FooterNavi />
     </div>
   );
 }

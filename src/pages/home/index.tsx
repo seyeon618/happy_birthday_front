@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { Divider } from "@mui/material";
 import axios from "axios";
 
 import PostContent from "../../components/atoms/PostContent";
 import Auth from "../../components/common/Auth";
+import FooterNavi from "../../components/common/FooterNavigator";
 import {
   Alarm,
   Circle,
   Container,
-  Footer,
-  FooterWrap,
   Header,
-  HomeIcon,
   IDText,
   Logo,
-  PostAddIcon,
-  ProfileIcon,
   ProfileList,
-  ReelsIcon,
-  SearchIcon,
   StyledAvatar,
   StyledGrid,
 } from "../../style/home/styles";
@@ -27,7 +20,6 @@ import {
 function Home(): React.ReactElement {
   const [id, setId] = useState(null);
   const [user, setUser] = useState([]);
-  const router = useRouter();
 
   const getUsers = () => {
     axios
@@ -54,10 +46,6 @@ function Home(): React.ReactElement {
     getUsers();
   }, [id]);
 
-  const onClickIcon = (path: string) => {
-    router.push(path);
-  };
-
   return (
     <Container>
       <Auth setId={setId} />
@@ -81,15 +69,7 @@ function Home(): React.ReactElement {
       <Divider light />
       <PostContent id={id} />
       <Divider light />
-      <FooterWrap>
-        <Footer>
-          <HomeIcon onClick={() => onClickIcon("/home")} />
-          <SearchIcon onClick={() => onClickIcon("/home")} />
-          <PostAddIcon onClick={() => onClickIcon("/feed/create")} />
-          <ReelsIcon onClick={() => onClickIcon("/home")} />
-          <ProfileIcon onClick={() => onClickIcon("/profile/0000.seo_")} />
-        </Footer>
-      </FooterWrap>
+      <FooterNavi />
     </Container>
   );
 }
