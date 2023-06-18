@@ -109,17 +109,20 @@ export const FollowInfoText = styled("div")<{ isBold?: boolean }>`
   font-weight: ${(props) => (props.isBold ? "bold" : "normal")};
 `;
 
-export const ContentWrap = styled("div")``;
+export const ContentWrap = styled("div")`
+  height: 100%;
+`;
+
 export const Content = styled("div")``;
 
 export const StyledImageList = styled(ImageList)`
   width: 100%;
-  gap: 0px;
-  aspect-ratio: 3/1;
+  gap: 0 !important;
 `;
 
 export const StyledImageListItem = styled(ImageListItem)`
   img {
     aspect-ratio: 1/1;
   }
+  aspect-ratio: 1/1;
 `;

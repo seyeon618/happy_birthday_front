@@ -38,7 +38,12 @@ function Profile(): React.ReactElement {
   const [posts, setPost] = useState([]);
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const handleOpen = (postData) => {
+    setOpen(true);
+    setSelectedPost(postData);
+  };
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
@@ -156,18 +161,20 @@ function Profile(): React.ReactElement {
                     srcSet={`${postData.img_list[0]}?fit=crop&auto=format&dpr=2 2x`}
                     alt={"post"}
                     loading="lazy"
-                    onClick={handleOpen}
+                    onClick={() => handleOpen(postData)}
                   />
-                  <PostModal
-                    id={postData.id}
-                    profile_path={profile}
-                    user_id={id}
-                    published_at={postData.published_at}
-                    post_list={postData.img_list}
-                    content={postData.content}
-                    open={open}
-                    handleClose={handleClose}
-                  />
+                  {selectedPost && (
+                    <PostModal
+                      id={selectedPost.id}
+                      profile_path={profile}
+                      user_id={id}
+                      published_at={selectedPost.published_at}
+                      post_list={selectedPost.img_list}
+                      content={selectedPost.content}
+                      open={open}
+                      handleClose={handleClose}
+                    />
+                  )}
                 </StyledImageListItem>
               ))}
             </StyledImageList>
