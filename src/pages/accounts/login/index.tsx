@@ -22,14 +22,8 @@ import {
   InputFormWrap,
   Title,
 } from "../../../style/accounts/login/styles";
-import { Picture, PictureWrap } from "../../../styles";
 import isMobile from "../../../utils/isMobile";
-
-interface Props {
-  isShowPicture: boolean;
-}
-
-function Login({ isShowPicture }: Props): React.ReactElement {
+function Login(): React.ReactElement {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [existId, setExistId] = useState(false);
@@ -83,11 +77,6 @@ function Login({ isShowPicture }: Props): React.ReactElement {
       <WholeWrap>
         <CardWrap>
           <Article>
-            {isShowPicture && (
-              <PictureWrap isMobile={isMobileVariable}>
-                <Picture />
-              </PictureWrap>
-            )}
             <InputFormWrap>
               <InputFormTop>
                 <Title>Happy Birthday</Title>
