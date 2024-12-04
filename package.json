@@ -71,5 +71,5 @@
     "prettier": "2.8.8",
     "typescript": "5.1.3"
   },
-  "proxy": "https://port-0-happy-birthday-back-e9btb72mlgxdl2cj.sel4.cloudtype.app"
+  "proxy": "http://127.0.0.1:8000"
 }

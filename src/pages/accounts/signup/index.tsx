@@ -69,50 +69,69 @@ function SignUp(): React.ReactElement {
       })
       .catch((error) => {
         console.log(error.response);
+        alert("이미 존재하는 아이디 입니다.");
       });
   };
 
   const onClickSignUp = (e) => {
     e.preventDefault();
 
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
+    // if (selectedFile) {
+    //   const formData = new FormData();
+    //   formData.append("file", selectedFile);
+    //
+    //   axios
+    //     .post(
+    //       `${process.env.NEXT_PUBLIC_BASEURL}/accounts/profile/upload?user_id=${id}`,
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       }
+    //     )
+    //     .then((res) => {
+    //       const loginData = {
+    //         username: id,
+    //         password: pw,
+    //       };
+    //
+    //       axios
+    //         .post(
+    //           `${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`,
+    //           qs.stringify(loginData)
+    //         )
+    //         .then((res) => {
+    //           setCookie("id", res.data.access_token);
+    //           router.push("/home");
+    //         })
+    //         .catch((error) => {
+    //           console.log(error.responsee);
+    //         });
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.response);
+    //     });
+    //   router.push(`/home`);
+    // }
+    const loginData = {
+      username: id,
+      password: pw,
+    };
 
-      axios
-        .post(
-          `${process.env.NEXT_PUBLIC_BASEURL}/accounts/profile/upload?user_id=${id}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
-        .then((res) => {
-          const loginData = {
-            username: id,
-            password: pw,
-          };
-
-          axios
-            .post(
-              `${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`,
-              qs.stringify(loginData)
-            )
-            .then((res) => {
-              setCookie("id", res.data.access_token);
-              router.push("/home");
-            })
-            .catch((error) => {
-              console.log(error.responsee);
-            });
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-      router.push(`/home`);
-    }
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_BASEURL}/accounts/login`,
+        qs.stringify(loginData)
+      )
+      .then((res) => {
+        setCookie("id", res.data.access_token);
+        router.push("/home");
+      })
+      .catch((error) => {
+        console.log(error.responsee);
+      });
+    router.push(`/home`);
   };
 
   const onClickLogin = (e) => {
